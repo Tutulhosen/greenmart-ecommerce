@@ -85,8 +85,6 @@
 
 
 <script src="{{asset('frontend/backEnd/assets/vendor/toastr/toastr.min.js')}}"></script>
-<script>
-                            </script>
 
 <script>
     $('#account-btn').on('click', function () {
@@ -110,93 +108,111 @@
     });
 </script>
 
-    <script>
-        $(document).ready(function () {
-            $(".owl-carousel").owlCarousel({
-                margin: 15,
-                loop: true,
-                dots: false,
-                autoplay: true,
-                autoplayTimeout: 6000,
-                autoplayHoverPause: true,
-                responsiveClass: true,
-                responsive: {
-                    0: {
-                        items: 3,
-                        nav: true
-                    },
-                    600: {
-                        items: 3,
-                        nav: false
-                    },
-                    1000: {
-                        items: 6,
-                        nav: true,
-                        loop: false
-                    }
+<script>
+    $(document).ready(function () {
+        $(".owl-carousel").owlCarousel({
+            margin: 15,
+            loop: true,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 6000,
+            autoplayHoverPause: true,
+            responsiveClass: true,
+            responsive: {
+                0: {
+                    items: 3,
+                    nav: true
+                },
+                600: {
+                    items: 3,
+                    nav: false
+                },
+                1000: {
+                    items: 6,
+                    nav: true,
+                    loop: false
                 }
-            });
-
-            $('.owl-nav').remove();
-        });
-    </script>
-	
-    <script>
-        function loadPage() {
-            const content = document.getElementById('content');
-            const url = window.location.pathname;
-
-            if (url === '/home') {
-                content.innerHTML = '<h1>Welcome to Home Page</h1>';
-            } else if (url === '/landing_page.html') {
-                content.innerHTML = '<h1>About Us</h1>';
-            } else {
-                content.innerHTML = '<h1>404 - Page Not Found</h1>';
             }
+        });
+
+        $('.owl-nav').remove();
+    });
+</script>
+
+<script>
+    function loadPage() {
+        const content = document.getElementById('content');
+        const url = window.location.pathname;
+
+        if (url === '/home') {
+            content.innerHTML = '<h1>Welcome to Home Page</h1>';
+        } else if (url === '/landing_page.html') {
+            content.innerHTML = '<h1>About Us</h1>';
+        } else {
+            content.innerHTML = '<h1>404 - Page Not Found</h1>';
+        }
+    }
+
+    window.onload = loadPage;
+</script>
+<script>
+    $('#qty_plus').on('click', function () {
+        
+        var qty = $('#qty').val();
+        qty++;
+        $('#qty').val(qty);
+    });
+
+    $('#qty_minus').on('click', function () {
+        var qty = $('#qty').val();
+        qty--;
+        if (qty < 1) {
+            $('#qty').val(1);
+        } else {
+            $('#qty').val(qty);
         }
 
-        window.onload = loadPage;
-    </script>
-	
-	    <script>
-        // Get elements
-        const openPopupBtn = document.getElementById('openPopupBtn');
-        const popupForm = document.getElementById('popupForm');
-        const closePopupBtn = document.getElementById('closePopupBtn');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const showRegisterForm = document.getElementById('showRegisterForm');
-        const showLoginForm = document.getElementById('showLoginForm');
+    });
+</script>
+<script>
+    // Get elements
+    const openPopupBtn = document.getElementById('openPopupBtn');
+    const popupForm = document.getElementById('popupForm');
+    const closePopupBtn = document.getElementById('closePopupBtn');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const showRegisterForm = document.getElementById('showRegisterForm');
+    const showLoginForm = document.getElementById('showLoginForm');
 
-        // Open the popup when the button is clicked
-        openPopupBtn.addEventListener('click', () => {
-            popupForm.style.display = 'flex';
-        });
+    // Open the popup when the button is clicked
+    openPopupBtn.addEventListener('click', () => {
+        popupForm.style.display = 'flex';
+    });
 
-        // Close the popup when the close button is clicked
-        closePopupBtn.addEventListener('click', () => {
+    // Close the popup when the close button is clicked
+    closePopupBtn.addEventListener('click', () => {
+        popupForm.style.display = 'none';
+    });
+
+    // Close the popup if user clicks outside the form
+    window.addEventListener('click', (e) => {
+        if (e.target === popupForm) {
             popupForm.style.display = 'none';
-        });
+        }
+    });
 
-        // Close the popup if user clicks outside the form
-        window.addEventListener('click', (e) => {
-            if (e.target === popupForm) {
-                popupForm.style.display = 'none';
-            }
-        });
+    // Show the registration form and hide the login form
+    showRegisterForm.addEventListener('click', () => {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+    });
 
-        // Show the registration form and hide the login form
-        showRegisterForm.addEventListener('click', () => {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
-        });
-
-        // Show the login form and hide the registration form
-        showLoginForm.addEventListener('click', () => {
-            registerForm.style.display = 'none';
-            loginForm.style.display = 'block';
-        });
-    </script>
+    // Show the login form and hide the registration form
+    showLoginForm.addEventListener('click', () => {
+        registerForm.style.display = 'none';
+        loginForm.style.display = 'block';
+    });
+</script>
 	
 	
 </body>
