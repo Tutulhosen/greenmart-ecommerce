@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class FrontendController extends Controller
 {
@@ -129,35 +130,56 @@ class FrontendController extends Controller
     }    
 
     public function order(Request $request) {
+        // Insert order details into the database and get the order ID
+        $order_id = DB::table('customer_order')->insertGetId([
+            'product_id' => $request->input('product_id'),
+            'total_price' => $request->input('total_amount'),
+            'products_qty' => $request->input('qty'),
+            'full_name' => $request->input('full_name'),
+            'delivery_address' => $request->input('delivery_address'),
+            'phone_number' => $request->input('phone_number'),
+            'additional_number' => $request->input('additional_number'),
+            'emai_address' => $request->input('emai_address'),
+            'additional_information' => $request->input('additional_information'),
+        ]);
+        $order_data=DB::table('products')
+        ->join('customer_order', 'products.id', 'customer_order.product_id')
+        ->where('customer_order.id', $order_id)
+        ->select('products.title as title', 'products.price as price', 'products.discount as discount')
+        ->first();
+        $title = $order_data->title ?? ' ';
+        $price = $order_data->price ?? 0;
+        $discount=$order_data->discount ? (int)$order_data->discount : 0;
+        $discount_price=$price-$discount;
+        // dd($discount_price);
     
-        // $request->validate([
-        //     'product_id' => 'required|integer',
-        //     'total_amount' => 'required|numeric',
-        //     'qty' => 'required|integer',
-        //     'full_name' => 'required|string',
-        //     'delivery_address' => 'required|string',
-        //     'phone_number' => 'required|string',
-        //     'email' => 'required|email'
-        // ]);
-    
-        // Insert order details into the database
-        // DB::table('orders')->insert([
-        //     'product_id' => $request->input('product_id'),
-        //     'total_amount' => $request->input('total_amount'),
-        //     'qty' => $request->input('qty'),
-        //     'full_name' => $request->input('full_name'),
-        //     'delivery_address' => $request->input('delivery_address'),
-        //     'phone_number' => $request->input('phone_number'),
-        //     'additional_number' => $request->input('additional_number'),
-        //     'email' => $request->input('email'),
-        //     'additional_info' => $request->input('additional_info'),
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
-    
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Your order has been successfully placed!');
+        return redirect()->route('shopping.card', [
+            'order_id' => $order_id,
+            'total_price' => $request->input('total_amount'),
+            'qty' => $request->input('qty'),
+            'title' => $title,
+            'discount_price' => $discount_price
+        ])->with('success', 'Your order has been successfully placed!');
+        
     }
+
+    public function shopping_card(Request $request) {
+        $data['category'] = DB::table('category')->get();
+        
+ 
+        $data['order_id'] = $request->query('order_id');
+        $data['total_price'] = $request->query('total_price', 0); 
+        $data['discount_price'] = $request->query('discount_price', 0); 
+        $data['qty'] = $request->query('qty', 0); 
+        $data['title'] = $request->query('title', ''); 
+        $data['success'] = session('success');
+        
+        // Return the view with the necessary data
+        return view('frontend.pages.shopping_cart')->with($data);
+    }
+    
+    
+    
        
     
     

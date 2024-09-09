@@ -18,5 +18,27 @@ if (!function_exists('get_sub_category_name')) {
     }
 }
 
+if (!function_exists('order_status')) {
+    function order_status($order_status)
+    {
+       
+        if ($order_status==0) {
+            return "Pending";
+        }elseif ($order_status==1) {
+            return "Canceled";
+        }elseif ($order_status==2) {
+            return "Accepted";
+        }elseif ($order_status==3) {
+            return "On Delivery";
+        }elseif ($order_status==4) {
+            return "Delivery Done";
+        }elseif ($order_status==5) {
+            return "Return Back";
+        }else{
+            return "--";
+        }
+    }
+}
+
 
 ?>

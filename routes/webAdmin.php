@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\backend\AdminDashboardController;
-use App\Http\Controllers\backend\LoginController;
-use App\Http\Controllers\backend\ProductController;
-use App\Http\Controllers\backend\SliderController;
-use App\Http\Controllers\backend\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\backend\UserController;
+use App\Http\Controllers\backend\LoginController;
+use App\Http\Controllers\backend\OrderController;
+use App\Http\Controllers\backend\SliderController;
+use App\Http\Controllers\backend\ProductController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\backend\AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +95,17 @@ Route::middleware('admin')->group(function (){
         Route::post('/update',[UserController::class, 'userUpdate'])->name('update');
         Route::get('/delete/{id}',[UserController::class, 'userDelete'])->name('delete');
         Route::get('/status/update/{id}',[UserController::class, 'userStatusUpdate'])->name('status.update');
+    });
+
+    //order route
+    Route::name('admin.order.')->prefix('admin/order')->group(function () {
+        Route::get('/list',[OrderController::class, 'orderList'])->name('list');
+        Route::get('/page',[OrderController::class, 'uesrPage'])->name('page');
+        Route::post('/store',[OrderController::class, 'userStore'])->name('store');
+        Route::get('/update/{id}',[OrderController::class, 'userupdatePage'])->name('update.page');
+        Route::post('/update',[OrderController::class, 'userUpdate'])->name('update');
+        Route::get('/delete/{id}',[OrderController::class, 'userDelete'])->name('delete');
+        Route::get('/status/update',[OrderController::class, 'orderStatusUpdate'])->name('status.update');
     });
 });
 

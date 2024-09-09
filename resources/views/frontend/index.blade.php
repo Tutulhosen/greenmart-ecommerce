@@ -50,7 +50,7 @@
                         @else
                             <p class="font-weight-bold mb-0" style="color: #fca204">৳ {{ $product['price'] }}</p>
                         @endif
-                            <p class="mb-0 prod_name"><a href="{{ route('frontend.single.product.page', $product['id']) }}  ">{{ $product['title'] }}</a></p>
+                            <p class="mb-0 prod_name"><a href="{{ route('frontend.single.product.page', $product['id']) }}">{{ $product['title'] }}</a></p>
                         <form action="" method="post">
                             @csrf
                             <input type="hidden" name="qty" value="1">

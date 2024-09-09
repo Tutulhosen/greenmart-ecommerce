@@ -74,6 +74,9 @@
                         </div>
                         
                         <input type="submit" class="btn px-4 order_now_btn order_now_btn_m" name="order_now" value="অর্ডার করুন">
+                        <div class="mt-md-3 mt-2">
+                            <input type="submit" class="btn px-4 add_cart_btn" name="add_cart" value="কার্ট-এ যোগ করুন">
+                        </div>
                     </form>
                     
 

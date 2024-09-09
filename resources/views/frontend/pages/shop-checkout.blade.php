@@ -10,28 +10,36 @@
                 
 				<div style="flex: 1; padding: 20px; background-color: #fff; border-radius: 10px; border: 1px solid #e0e0e0;">
                     <h2 style="color: #333; font-size: 24px; margin-bottom: 20px;">Payment Details</h2>
-                    <form action="{{ route('order') }}" method="POST">
+                    <form action="{{route('order')}}" method="POST">
                         @csrf
-                        <input type="hidden" id="product_id" name="product_id" value="{{ $product_id }}">
-                        <input type="hidden" id="total_amount" name="total_amount" value="{{ $total_amount }}">
-                        <input type="hidden" id="qty" name="qty" value="{{ $qty }}">
-                        
-                        <input type="text" name="full_name" placeholder="Full Name" required>
-                        <input type="text" name="delivery_address" placeholder="Delivery Address" required>
-                        <input type="text" name="phone_number" placeholder="Phone Number" required>
-                        <input type="text" name="additional_number" placeholder="Additional Number">
-                        <input type="email" name="email" placeholder="Email Address" required>
-                        <textarea name="additional_info" placeholder="Additional information"></textarea>
-                        
-                        <button type="submit">Place Order</button>
+                        <input type="hidden" id="product_id" name="product_id" value="{{$product_id}}">
+                        <input type="hidden" id="total_amount" name="total_amount" value="{{$total_amount}}">
+                        <input type="hidden" id="qty" name="qty" value="{{$qty}}">
+
+                        <label for="card-name" style="font-size: 16px; color: #333; font-weight: 500; margin-bottom: 10px;"></label>
+                        <input type="text" id="card-name" name="full_name" placeholder="Full Name" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
+						
+                 
+						 <label for="card-name" style="font-size: 16px; color: #333; font-weight: 500; margin-bottom: 10px;"></label>
+                        <input type="text" id="card-name" placeholder="Delivery Address" name="delivery_address" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
+							<div style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label for="expiry" style="font-size: 16px; color: #333; font-weight: 500;"></label>
+                                <input type="text" id="expiry" placeholder="Phone Number" name="phone_number" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="cvv" style="font-size: 16px; color: #333; font-weight: 500;"></label>
+                                <input type="text" id="cvv" placeholder="Additional Number" name="additional_number" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
+                            </div>
+                        </div>
+                               <label for="card-number" style="font-size: 16px; color: #333; font-weight: 500; margin-bottom: 10px;"></label>
+                        <input type="email" id="card-number" placeholder="Email Address" name="emai_address" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
+						
+						<textarea rows="5" id="card-name" placeholder="Additional information" name="additional_information" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"></textarea>
+                        <button type="submit" style="width: 100%; background-color: #28a745; color: white; padding: 15px; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: 600;">Place Order</button>
                     </form>
                     
-                    <!-- Display success message -->
-                    @if(session('success'))
-                        <div style="color: green;">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                    
                     
                 </div>
 				<!-- Left Column (Order Summary) -->

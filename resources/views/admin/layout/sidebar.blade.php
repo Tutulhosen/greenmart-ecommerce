@@ -103,12 +103,12 @@
 
       <ul class="menu-sub">
         <li class="menu-item">
-          <a href="{{route('admin.slider.page')}}" class="menu-link">
+          <a href="" class="menu-link">
             <div class="text-truncate" data-i18n="Without menu">Add New</div>
           </a>
         </li>
         <li class="menu-item">
-          <a href="{{route('admin.slider.list')}}" class="menu-link">
+          <a href="{{route('admin.order.list')}}" class="menu-link">
             <div class="text-truncate" data-i18n="Without navbar">List</div>
           </a>
         </li>
