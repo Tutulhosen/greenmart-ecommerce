@@ -25,6 +25,7 @@ Route::get('/', [FrontendController::class, 'home'])->name('home');
 Route::get('/categoty-page/{id}', [FrontendController::class, 'category_page'])->name('frontend.category.page');
 Route::get('/single-product/{id}', [FrontendController::class, 'single_product'])->name('frontend.single.product.page');
 Route::post('/shop-checkout', [FrontendController::class, 'shop_checkout'])->name('shop.checkout');
+Route::post('/order', [FrontendController::class, 'order'])->name('order');
 
 
 

@@ -37,9 +37,9 @@
                     <h3 class="font-weight-bold single_prod_prices">
                         @if($single_product_data['discount'])
                             <span style="text-decoration: line-through; color: #555; opacity: .5">৳ {{ $single_product_data['price'] }}</span>
-                            <span style="color: #0088cc">৳ {{ $single_product_data['discount_price'] }}</span>
+                            <span style="color: #0088cc" id="product_price">{{ $single_product_data['discount_price'] }}</span>
                         @else
-                            <span style="color: #0088cc">৳ {{ $single_product_data['price'] }}</span>
+                            <span style="color: #0088cc" id="product_price">৳ {{ $single_product_data['price'] }}</span>
                         @endif
                     </h3>
                     <p class="sku_text"><span>প্রোডাক্ট কোড: </span> <span class="p-0 pr-1">{{ $single_product_data['product_code'] }}</span></p>
@@ -48,10 +48,14 @@
                     <form action="{{route('shop.checkout')}}" method="post">
                         @csrf
                         <input type="hidden" id="product_id" name="product_id" value="{{$single_product_data['id']}}">
+                        <input type="hidden" id="total_amount" name="total_amount" value="{{ $single_product_data['discount'] ? $single_product_data['discount_price'] : $single_product_data['price'] }}">
+                        <input type="hidden" id="product_price_value" value="{{ $single_product_data['discount'] ? $single_product_data['discount_price'] : $single_product_data['price'] }}">
+                        
                         <div class="d-flex">
                             <div class="qty-text-div">
                                 <span>পরিমান : </span>
                             </div>
+                    
                             <div class="qty_div">
                                 <div class="minus-qty-div">
                                     <i class="fa fa-minus" id="qty_minus"></i>
@@ -63,16 +67,15 @@
                                     <i class="fa fa-plus" id="qty_plus"></i>
                                 </div>
                             </div>
+                        </div><br>
+                    
+                        <div class="total_amount">
+                            <span>মোট  : </span> <span id="total_price">{{ $single_product_data['discount'] ? $single_product_data['discount_price'] : $single_product_data['price'] }}</span> টাকা
                         </div>
-
-                        <div class="mt-md-4 mt-2">
-                            <input type="submit" class="btn px-4 order_now_btn order_now_btn_m" name="order_now" value="অর্ডার করুন">
-                        </div>
-
-                        <div class="mt-md-3 mt-2">
-                            <input type="submit" class="btn px-4 add_cart_btn" name="add_cart" value="কার্ট-এ যোগ করুন">
-                        </div>
+                        
+                        <input type="submit" class="btn px-4 order_now_btn order_now_btn_m" name="order_now" value="অর্ডার করুন">
                     </form>
+                    
 
                     <div class="mt-md-5 mt-4">
                         <h4>ফোনে অর্ডারের জন্য ডায়াল করুন</h4>
@@ -165,3 +168,5 @@
 </section>
 
 @endsection
+
+

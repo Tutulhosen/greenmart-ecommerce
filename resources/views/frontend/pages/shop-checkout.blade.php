@@ -10,29 +10,29 @@
                 
 				<div style="flex: 1; padding: 20px; background-color: #fff; border-radius: 10px; border: 1px solid #e0e0e0;">
                     <h2 style="color: #333; font-size: 24px; margin-bottom: 20px;">Payment Details</h2>
-                    <form>
-                        <label for="card-name" style="font-size: 16px; color: #333; font-weight: 500; margin-bottom: 10px;"></label>
-                        <input type="text" id="card-name" placeholder="Full Name" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
-						
-                 
-						 <label for="card-name" style="font-size: 16px; color: #333; font-weight: 500; margin-bottom: 10px;"></label>
-                        <input type="text" id="card-name" placeholder="Delivery Address" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
-							<div style="display: flex; gap: 10px;">
-                            <div style="flex: 1;">
-                                <label for="expiry" style="font-size: 16px; color: #333; font-weight: 500;"></label>
-                                <input type="text" id="expiry" placeholder="Phone Number" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
-                            </div>
-                            <div style="flex: 1;">
-                                <label for="cvv" style="font-size: 16px; color: #333; font-weight: 500;"></label>
-                                <input type="text" id="cvv" placeholder="Additional Number" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
-                            </div>
-                        </div>
-                               <label for="card-number" style="font-size: 16px; color: #333; font-weight: 500; margin-bottom: 10px;"></label>
-                        <input type="email" id="card-number" placeholder="Email Address" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;">
-						
-						<textarea rows="5" id="card-name" placeholder="Additional information" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;"></textarea>
-                        <button type="submit" style="width: 100%; background-color: #28a745; color: white; padding: 15px; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: 600;">Place Order</button>
+                    <form action="{{ route('order') }}" method="POST">
+                        @csrf
+                        <input type="hidden" id="product_id" name="product_id" value="{{ $product_id }}">
+                        <input type="hidden" id="total_amount" name="total_amount" value="{{ $total_amount }}">
+                        <input type="hidden" id="qty" name="qty" value="{{ $qty }}">
+                        
+                        <input type="text" name="full_name" placeholder="Full Name" required>
+                        <input type="text" name="delivery_address" placeholder="Delivery Address" required>
+                        <input type="text" name="phone_number" placeholder="Phone Number" required>
+                        <input type="text" name="additional_number" placeholder="Additional Number">
+                        <input type="email" name="email" placeholder="Email Address" required>
+                        <textarea name="additional_info" placeholder="Additional information"></textarea>
+                        
+                        <button type="submit">Place Order</button>
                     </form>
+                    
+                    <!-- Display success message -->
+                    @if(session('success'))
+                        <div style="color: green;">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    
                 </div>
 				<!-- Left Column (Order Summary) -->
                 <div style="flex: 1; padding: 0px; background-color: #f9f9f9; border-radius: 10px; border: 1px solid #e0e0e0;">
@@ -46,6 +46,7 @@
                                     <tr style="background-color: #f9f9f9;">
                                         <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; font-size: 16px;">Image</th>
                                         <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; font-size: 16px;">Product</th>
+                                        <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; font-size: 16px;">Qnt</th>
                                         <th style="padding: 15px; text-align: right; border-bottom: 1px solid #ddd; font-size: 16px;">Price</th>
                                     </tr>
                                 </thead>
@@ -53,54 +54,32 @@
                                     <!-- Row 1 -->
                                     <tr>
                                         <td style="padding: 15px; border-bottom: 1px solid #ddd;">
-                                            <img src="image/66c79a0239506_180x180.jpg" alt="Product 1" style="width: 80px; height: auto; border-radius: 8px;">
+                                            <img src="{{asset('images/galleries/' . $this_product->thumbnail)}}" alt="Product 1" style="width: 80px; height: auto; border-radius: 8px;">
                                         </td>
                                         <td style="padding: 15px; border-bottom: 1px solid #ddd;">
-                                            <h4 style="margin: 0; font-size: 18px; color: #333;">৪ প্রকার ১২ মাসী বীজ</h4>
-                                            <p style="margin: 5px 0 0; color: #555;">৪ প্রকার ১২ মাসী বীজ ৪৫০ টাকায় !!!</p>
+                                            <h4 style="margin: 0; font-size: 18px; color: #333;">{{$this_product->title}}</h4>
+                                           
                                         </td>
                                         <td style="padding: 15px; text-align: right; border-bottom: 1px solid #ddd;">
-                                            <span style="font-size: 18px; color: #333;">৳  450</span>
-                                        </td>
-                                    </tr>
-                                    <!-- Row 2 -->
-                                    <tr>
-                                        <td style="padding: 15px; border-bottom: 1px solid #ddd;">
-                                            <img src="image/620e6907b4706_180x180.jpg" alt="Product 2" style="width: 80px; height: auto; border-radius: 8px;">
-                                        </td>
-                                        <td style="padding: 15px; border-bottom: 1px solid #ddd;">
-                                            <h4 style="margin: 0; font-size: 18px; color: #333;">Belly Drainage Ginger Essential Oil</h4>
-                                            <p style="margin: 5px 0 0; color: #555;">Description of product 2</p>
+                                            <span style="font-size: 18px; color: #333;">৳  {{$total_amount}}</span>
                                         </td>
                                         <td style="padding: 15px; text-align: right; border-bottom: 1px solid #ddd;">
-                                            <span style="font-size: 18px; color: #333;">৳  790</span>
+                                            <span style="font-size: 18px; color: #333;">৳  {{$total_amount}}</span>
                                         </td>
                                     </tr>
-                                    <!-- Row 3 -->
-                                    <tr>
-                                        <td style="padding: 15px; border-bottom: 1px solid #ddd;">
-                                            <img src="image/620241a5eed86_180x180.jpg" alt="Product 3" style="width: 80px; height: auto; border-radius: 8px;">
-                                        </td>
-                                        <td style="padding: 15px; border-bottom: 1px solid #ddd;">
-                                            <h4 style="margin: 0; font-size: 18px; color: #333;">Dual-Sim-Supported-Land-Phone ( ডুয়েল</h4>
-                                            <p style="margin: 5px 0 0; color: #555;">আপনার শক্তিশালী নেটওয়ার্ক প্রয়োজন ?</p>
-                                        </td>
-                                        <td style="padding: 15px; text-align: right; border-bottom: 1px solid #ddd;">
-                                            <span style="font-size: 18px; color: #333;">৳  999</span>
-                                        </td>
-                                    </tr>
+                                    
                                 </tbody>
                                 <!-- Total Price Row -->
                                 <tfoot>
                                     <tr style="background-color: #f9f9f9;">
                                     
-                                        <td colspan="2" style="padding: 13px; text-align: right; border-top: 1px solid #ddd; font-size: 18px; color: #333;">Delivery Charge: </td>
+                                        <td colspan="3" style="padding: 13px; text-align: right; border-top: 1px solid #ddd; font-size: 18px; color: #333;">Delivery Charge: </td>
                                         <td style="padding: 13px; text-align: right; border-top: 1px solid #ddd; font-size: 18px; color: #333;">৳ 0.00</td>
                                     </tr>
                                     <tr style="background-color: #f9f9f9;">
                                     
-                                        <td colspan="2" style="padding: 15px; text-align: right; border-top: 1px solid #ddd; font-size: 18px; color: #333;">Total</td>
-                                        <td style="padding: 15px; text-align: right; border-top: 1px solid #ddd; font-size: 18px; color: #333;">৳ 225</td>
+                                        <td colspan="3" style="padding: 15px; text-align: right; border-top: 1px solid #ddd; font-size: 18px; color: #333;">Total</td>
+                                        <td style="padding: 15px; text-align: right; border-top: 1px solid #ddd; font-size: 18px; color: #333;">৳ {{$total_amount}}</td>
                                     </tr>
                                 </tfoot>
                             </table>

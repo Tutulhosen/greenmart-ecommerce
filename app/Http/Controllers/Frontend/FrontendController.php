@@ -114,10 +114,52 @@ class FrontendController extends Controller
         return view('frontend.pages.single-product', $data);
     }
 
-    public function shop_checkout(Request $request){
+    public function shop_checkout(Request $request) {
+ 
+        $data['product_id'] = $request->input('product_id');
+        $data['total_amount'] = $request->input('total_amount');
+        $data['qty'] = $request->input('qty');
+    
+   
+        $data['this_product'] = DB::table('products')->where('id', $data['product_id'])->first();
+
         $data['category'] = DB::table('category')->get();
+    
         return view('frontend.pages.shop-checkout')->with($data);
+    }    
+
+    public function order(Request $request) {
+    
+        // $request->validate([
+        //     'product_id' => 'required|integer',
+        //     'total_amount' => 'required|numeric',
+        //     'qty' => 'required|integer',
+        //     'full_name' => 'required|string',
+        //     'delivery_address' => 'required|string',
+        //     'phone_number' => 'required|string',
+        //     'email' => 'required|email'
+        // ]);
+    
+        // Insert order details into the database
+        // DB::table('orders')->insert([
+        //     'product_id' => $request->input('product_id'),
+        //     'total_amount' => $request->input('total_amount'),
+        //     'qty' => $request->input('qty'),
+        //     'full_name' => $request->input('full_name'),
+        //     'delivery_address' => $request->input('delivery_address'),
+        //     'phone_number' => $request->input('phone_number'),
+        //     'additional_number' => $request->input('additional_number'),
+        //     'email' => $request->input('email'),
+        //     'additional_info' => $request->input('additional_info'),
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
+    
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Your order has been successfully placed!');
     }
+       
+    
     
     
    

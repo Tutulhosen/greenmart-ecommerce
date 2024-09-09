@@ -156,22 +156,34 @@
     window.onload = loadPage;
 </script>
 <script>
-    $('#qty_plus').on('click', function () {
-        
-        var qty = $('#qty').val();
+    // Get price value from the hidden input
+    var productPrice = parseFloat(document.getElementById('product_price_value').value);
+    
+    // Function to update the total amount
+    function updateTotalAmount() {
+        var qty = parseInt(document.getElementById('qty').value);
+        var productPrice = parseInt(document.getElementById('product_price_value').value);
+        var total = productPrice * qty;
+        document.getElementById('total_price').innerText = total;
+        document.getElementById('total_amount').value = total; // Update hidden input
+    }
+
+    // Increment quantity
+    document.getElementById('qty_plus').addEventListener('click', function () {
+        var qty = parseInt(document.getElementById('qty').value);
         qty++;
-        $('#qty').val(qty);
+        document.getElementById('qty').value = qty;
+        updateTotalAmount(); // Update total
     });
 
-    $('#qty_minus').on('click', function () {
-        var qty = $('#qty').val();
-        qty--;
-        if (qty < 1) {
-            $('#qty').val(1);
-        } else {
-            $('#qty').val(qty);
+    // Decrement quantity
+    document.getElementById('qty_minus').addEventListener('click', function () {
+        var qty = parseInt(document.getElementById('qty').value);
+        if (qty > 1) {
+            qty--;
+            document.getElementById('qty').value = qty;
+            updateTotalAmount(); // Update total
         }
-
     });
 </script>
 <script>
