@@ -73,7 +73,7 @@
                             <span>মোট  : </span> <span id="total_price">{{ $single_product_data['discount'] ? $single_product_data['discount_price'] : $single_product_data['price'] }}</span> টাকা
                         </div>
                         
-                        <input type="submit" class="btn px-4 order_now_btn order_now_btn_m" name="order_now" value="অর্ডার করুন">
+                        {{-- <input type="submit" class="btn px-4 order_now_btn order_now_btn_m" name="order_now" value="অর্ডার করুন"> --}}
                         <div class="mt-md-3 mt-2">
                             <input type="submit" class="btn px-4 add_cart_btn" name="add_cart" value="কার্ট-এ যোগ করুন">
                         </div>

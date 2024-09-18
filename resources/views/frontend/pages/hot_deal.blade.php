@@ -29,7 +29,7 @@
                                                 <span>ছাড়</span>
                                             </div>
                                         </div>
-                                        <p class="float_price">৳ {{ $deal['price'] }}</p>
+                                        <p class="float_price">৳ {{ $deal['discount_price'] }}</p>
                                         <img src="{{asset('images/galleries/'.$deal['thumbnail'])}}">
                                     </a>
                                 </div>

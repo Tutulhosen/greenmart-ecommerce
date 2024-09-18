@@ -139,22 +139,7 @@
     });
 </script>
 
-<script>
-    function loadPage() {
-        const content = document.getElementById('content');
-        const url = window.location.pathname;
 
-        if (url === '/home') {
-            content.innerHTML = '<h1>Welcome to Home Page</h1>';
-        } else if (url === '/landing_page.html') {
-            content.innerHTML = '<h1>About Us</h1>';
-        } else {
-            content.innerHTML = '<h1>404 - Page Not Found</h1>';
-        }
-    }
-
-    window.onload = loadPage;
-</script>
 <script>
     // Get price value from the hidden input
     var productPrice = parseFloat(document.getElementById('product_price_value').value);
@@ -225,7 +210,189 @@
         loginForm.style.display = 'block';
     });
 </script>
-	
+<script>
+    @if(Session::has('success'))
+        toastr.success("{{ Session::get('success') }}");
+    @endif
+
+    @if(Session::has('error'))
+        toastr.error("{{ Session::get('error') }}");
+    @endif
+
+    @if($errors->any())
+        @foreach ($errors->all() as $error)
+            toastr.error("{{ $error }}");
+        @endforeach
+    @endif
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Retrieve cart count from local storage when the page loads
+        var cartCount = localStorage.getItem('cartCount') || 0;
+        
+        // If the cart count is greater than 0, display it
+        if (cartCount > 0) {
+            $('#cart-count').text(cartCount);
+            $('#cart-count').show();
+        } else {
+            $('#cart-count').hide(); // Hide the cart count if it's 0
+        }
+
+        // Handle the click event of the Add to Cart button
+        $('.add_cart_btn').click(function (e) {
+            e.preventDefault();
+            // Get the product details
+            var productId = $('#product_id').val();
+            
+            var qty = $('#qty').val();
+            var price = $('#product_price_value').val();
+
+            // Send AJAX request to add product to cart
+            $.ajax({
+                url: '{{ route("cart.add") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_id: productId,
+                    qty: qty,
+                    price: price
+                },
+                success: function (response) {
+                    if (response.already_in_cart) {
+                        // Toaster alert if the product is already in the cart
+                        toastr.info('This product is already in your cart!', 'Info');
+                    } else if (response.success) {
+                        // Get the updated cart count from the response
+                        cartCount = response.cart_count;
+                        // console.log(cartCount);
+                        
+                        // Save the cart count in local storage
+                        // localStorage.setItem('cartCount', cartCount);
+
+                        // Update the cart count display
+                        $('#cart-count').text(cartCount);
+                        $('#cart-count').fadeIn(100); // Show if hidden
+
+                        // Toaster alert for successfully adding to cart
+                        toastr.success('Product added to cart!', 'Success');
+
+                        // Optionally, add a flash animation to indicate the addition
+                        $('#cart-count').fadeOut(100).fadeIn(100);
+                    }
+                },
+                error: function (error) {
+                    // Toaster alert for any errors
+                    toastr.error('Something went wrong. Please try again.', 'Error');
+                    console.log(error);
+                }
+            });
+        });
+        $('.add_cart_btn_direct').click(function (e) {
+            e.preventDefault();
+            // Get the product details
+            var productId = $(this).data('id');
+           
+            var qty = $(this).data('qnt');
+            var price = $(this).data('price');
+
+            // Send AJAX request to add product to cart
+            $.ajax({
+                url: '{{ route("cart.add") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_id: productId,
+                    qty: qty,
+                    price: price
+                },
+                success: function (response) {
+                    if (response.already_in_cart) {
+                        // Toaster alert if the product is already in the cart
+                        toastr.info('This product is already in your cart!', 'Info');
+                    } else if (response.success) {
+                        // Get the updated cart count from the response
+                        cartCount = response.cart_count;
+                        // console.log(cartCount);
+                        
+                        // Save the cart count in local storage
+                        // localStorage.setItem('cartCount', cartCount);
+
+                        // Update the cart count display
+                        $('#cart-count').text(cartCount);
+                        $('#cart-count').fadeIn(100); // Show if hidden
+
+                        // Toaster alert for successfully adding to cart
+                        toastr.success('Product added to cart!', 'Success');
+
+                        // Optionally, add a flash animation to indicate the addition
+                        $('#cart-count').fadeOut(100).fadeIn(100);
+                    }
+                },
+                error: function (error) {
+                    // Toaster alert for any errors
+                    toastr.error('Something went wrong. Please try again.', 'Error');
+                    console.log(error);
+                }
+            });
+        });
+    });
+
+
+
+</script>
+
+<script>
+    
+    $(document).ready(function() {
+        $('#searchForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            var query = $('#searchQuery').val().trim();
+            var category = $('#category').val();
+            // alert(query);
+            // Check if the query is not empty or category is selected
+            if (query.length > 0 || category) {
+                // Redirect to search results page with query and category as parameters
+                window.location.href = '{{ route("search.results") }}?query=' + encodeURIComponent(query) + '&category=' + category;
+            } else {
+                // If no input is provided, stay on the current page
+                alert('Please enter a search query or select a category.');
+            }
+        });
+    });
+
+
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('{{ route('cart.count') }}')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('cart-count').textContent = data.count;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+<script>
+    function updateCartCount() {
+        fetch('{{ route('cart.count') }}')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('cart-count').textContent = data.count;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+
+    
+</script>
+
+
 	
 </body>
 

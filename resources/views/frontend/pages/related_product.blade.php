@@ -5,18 +5,34 @@
 </div>
 
 <div class="row m-0">
-        <div class="col-md-2 col-6 main-product">
-            <div class="main-product-inner-wrapper text-center">
-                <a href="../Wart-Remover-Cream/9.html">
-                    <img src="uploads/6200c1c23f8b6_180x180.jpg" alt="Wart Remover Cream">
-                </a>
-                                                    <p class="mb-0" style="text-decoration: line-through;color: #b8b8b8">৳ 790</p>
-                    <p class="font-weight-bold mb-0" style="color: #fca204">৳ 590</p>
-                                                <p class="mb-0 prod_name"><a href="../Wart-Remover-Cream/9.html">Wart Remover Cream</a></p>
-                <form action="http://burnamala.com/add-cart/1" method="post">
-                    <input type="hidden" name="_token" value="XXZrsl9wgpNRJBwrLcZyy76d5amKi0PaOHwQASGN">                                    <input type="hidden" name="qty" value="1">
-                    <input type="submit" class="btn btn-sm w-100 mb-2 order_now_btn" name="order_now" value="অর্ডার করুন">
-                </form>
+    @if (!empty($related_product))
+        @foreach($related_product as $product)
+            <div class="col-md-2 col-6 main-product">
+                <div class="main-product-inner-wrapper text-center">
+                    <a href="{{ route('frontend.single.product.page', $product['id']) }}">
+                        <img src="{{asset('images/galleries/'.$product['thumbnail'])}}" alt="{{ $product['title'] }}">
+                    </a>
+                    @if($product['discount_price'])
+                        <p class="mb-0" style="text-decoration: line-through;color: #b8b8b8">৳ {{ $product['price'] }}</p>
+                        <p class="font-weight-bold mb-0" style="color: #fca204">৳ {{ $product['discount_price'] }}</p>
+                    @else
+                        <p class="font-weight-bold mb-0" style="color: #fca204">৳ {{ $product['price'] }}</p>
+                    @endif
+                        <p class="mb-0 prod_name"><a href="{{ route('frontend.single.product.page', $product['id']) }}">{{ $product['title'] }}</a></p>
+                    <form action="" method="post">
+                        @csrf
+                        <input type="hidden" name="qty" value="1">
+                        <input type="submit" data-id="{{ $product['id'] }}" data-price="{{ $product['price'] }}" data-qnt="1" class="btn btn-sm w-100 mb-2 add_cart_btn_direct" name="add_cart" value="কার্ট-এ যোগ করুন">
+                    </form>
+                </div>
+            </div>
+        @endforeach
+    @else
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-center">কোনো পণ্য পাওয়া যায়নি।</h2> 
             </div>
         </div>
-</div>   
+    @endif
+    
+</div>

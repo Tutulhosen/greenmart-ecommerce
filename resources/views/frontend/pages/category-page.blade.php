@@ -37,7 +37,7 @@
                             <form action="" method="post">
                                 @csrf
                                 <input type="hidden" name="qty" value="1">
-                                <input type="submit" class="btn btn-sm w-100 mb-2 order_now_btn" name="order_now" value="অর্ডার করুন">
+                                <input type="submit" data-id="{{ $product['id'] }}" data-price="{{ $product['price'] }}" data-qnt="1" class="btn btn-sm w-100 mb-2 add_cart_btn_direct" name="add_cart" value="কার্ট-এ যোগ করুন">
                             </form>
                         </div>
                     </div>
