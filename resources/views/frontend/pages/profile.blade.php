@@ -14,9 +14,9 @@
                 <!-- Left Column - Profile Info -->
                 <div class="profile-info">
                     <h2>Profile Information</h2>
-                    <p><strong>Name:</strong> John Doe</p>
-                    <p><strong>Email:</strong> johndoe@example.com</p>
-                    <p><strong>Phone:</strong> (555) 555-5555</p>
+                    <p><strong>Name:</strong> {{Auth::guard('customer')->user()->name}}</p>
+                    <p><strong>Email:</strong> {{Auth::guard('customer')->user()->email}}</p>
+                    <p><strong>Phone:</strong> {{Auth::guard('customer')->user()->phone}}</p>
                     <button class="btn">Edit Profile</button>
                 </div>
                 
@@ -33,24 +33,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>#1001</td>
-                                <td>Aug 15, 2024</td>
-                                <td class="status shipped">Shipped</td>
-                                <td>$150.00</td>
-                            </tr>
-                            <tr>
-                                <td>#1002</td>
-                                <td>Aug 10, 2024</td>
-                                <td class="status canceled">Canceled</td>
-                                <td>$200.00</td>
-                            </tr>
-                            <tr>
-                                <td>#1003</td>
-                                <td>Aug 05, 2024</td>
-                                <td class="status pending">Pending</td>
-                                <td>$300.00</td>
-                            </tr>
+                            @if (!empty($recent_order))
+                                @foreach ($recent_order as $item)
+                                <tr>
+                                    <td>{{$item->order_code}}</td>
+                                    <td>{{formatDate($item->order_date)}}</td>
+                                    <td class="status shipped">{{order_status($item->order_status)}}</td>
+                                    <td>{{$item->total_price}}</td>
+                                </tr>
+                                @endforeach
+                            @else
+                                <h3 style="color: red, text-align:center">no order Found</h3>
+                            @endif
+                            
                         </tbody>
                     </table>
                 </div>

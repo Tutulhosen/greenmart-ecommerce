@@ -10,16 +10,20 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="headline">
-                                <h3 class="text-center">Create A New Category</h3>
+                                <h3 class="text-center">Create  New </h3>
                             </div>
                             <br>
                             <form class="forms-sample" id="myform">
                                 <div class="form-group">
-                                    <label for="name">Category Name</label>
-                                    <input type="text" class="form-control" id="category" placeholder="Category name">
+                                    <label for="name">Title </label>
+                                    <input type="text" class="form-control" id="title" placeholder="Title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Link </label>
+                                    <input type="text" class="form-control" id="link" placeholder="htpps://....">
                                 </div>
                                 <br>
-                                <button type="button" class="btn btn-success mr-2" id="cat_subnit_btn">Submit</button>
+                                <button type="button" class="btn btn-success mr-2" id="subnit_btn">Submit</button>
                                 <button class="btn btn-dark">Cancel</button>
                             </form>
                         </div>
@@ -40,21 +44,28 @@
 
     $(document).ready(function(){
         
-        $('#cat_subnit_btn').on('click', function(){
-        let name = $('#category').val();
-
+        $('#subnit_btn').on('click', function(){
+        let name = $('#title').val();
+        let link = $('#link').val();
+            // alert(name);
         if (name == '') {
-            showToast('Enter A Category Name', 'error');
+            showToast('Enter A Title', 'error');
+            return; 
+        }
+
+        if (link == '') {
+            showToast('Enter A link', 'error');
             return; 
         }
 
 
         let formData = new FormData();
         formData.append('name', name);
+        formData.append('link', link);
         formData.append('_token', '{{ csrf_token() }}'); 
 
         $.ajax({
-            url: '{{ route('admin.category.store') }}', 
+            url: '{{ route('admin.social_link.store') }}', 
             method: 'POST',
             data: formData,
             contentType: false, 
@@ -65,7 +76,7 @@
                     showToast(response.success, 'success');
                     setTimeout(function() {
                         // Redirect to the list page
-                        window.location.href = '/admin/category/list';  
+                        window.location.href = '/admin/social_link/list';  
                     }, 1500);
                     
                 }

@@ -13,6 +13,11 @@
                     <h2>Payment Details</h2>
                     <form action="{{ route('checkout') }}" method="post">
                         @csrf
+                        @foreach ($cart as $item)
+                            <input type="hidden" name="product_ids[]" value="{{ $item['product_id'] }}">
+                            <input type="hidden" name="quantities[]" value="{{ $item['qty'] }}">
+                        @endforeach
+                        <input type="hidden" value="{{$total}}" name="total" id="total">
                         <div class="input-group">
                             <div>
                                 <label for="full-name">Name</label>

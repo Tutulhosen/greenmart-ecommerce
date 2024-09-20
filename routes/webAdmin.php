@@ -6,8 +6,11 @@ use App\Http\Controllers\backend\LoginController;
 use App\Http\Controllers\backend\OrderController;
 use App\Http\Controllers\backend\SliderController;
 use App\Http\Controllers\backend\ProductController;
+use App\Http\Controllers\backend\TopHeaderController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\backend\AdminDashboardController;
+use App\Http\Controllers\backend\LogoController;
+use App\Http\Controllers\backend\SocialLinkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +109,38 @@ Route::middleware('admin')->group(function (){
         Route::post('/update',[OrderController::class, 'userUpdate'])->name('update');
         Route::get('/delete/{id}',[OrderController::class, 'userDelete'])->name('delete');
         Route::get('/status/update',[OrderController::class, 'orderStatusUpdate'])->name('status.update');
+    });
+
+    // top header route
+    Route::name('admin.top-header.')->prefix('admin/top-header')->group(function () {
+        Route::get('/list',[TopHeaderController::class, 'List'])->name('list');
+        Route::get('/page',[TopHeaderController::class, 'create'])->name('create');
+        Route::post('/store',[TopHeaderController::class, 'store'])->name('store');
+        Route::get('/update/{id}',[TopHeaderController::class, 'update_page'])->name('update.page');
+        Route::post('/update',[TopHeaderController::class, 'update'])->name('update');
+        Route::get('/delete/{id}',[TopHeaderController::class, 'delete'])->name('delete');
+        Route::get('/status/update/{id}',[TopHeaderController::class, 'status'])->name('status.update');
+    });
+
+    // logo route
+    Route::name('admin.logo.')->prefix('admin/logo')->group(function () {
+        Route::get('/list',[LogoController::class, 'List'])->name('list');
+        Route::get('/page',[LogoController::class, 'create'])->name('create');
+        Route::post('/store',[LogoController::class, 'store'])->name('store');
+        Route::get('/update/{id}',[LogoController::class, 'update_page'])->name('update.page');
+        Route::post('/update',[LogoController::class, 'update'])->name('update');
+        Route::get('/delete/{id}',[LogoController::class, 'delete'])->name('delete');
+        Route::get('/status/update/{id}',[LogoController::class, 'status'])->name('status.update');
+    });
+    // social media route
+    Route::name('admin.social_link.')->prefix('admin/social_link')->group(function () {
+        Route::get('/list',[SocialLinkController::class, 'List'])->name('list');
+        Route::get('/page',[SocialLinkController::class, 'create'])->name('create');
+        Route::post('/store',[SocialLinkController::class, 'store'])->name('store');
+        Route::get('/update/{id}',[SocialLinkController::class, 'update_page'])->name('update.page');
+        Route::post('/update',[SocialLinkController::class, 'update'])->name('update');
+        Route::get('/delete/{id}',[SocialLinkController::class, 'delete'])->name('delete');
+        Route::get('/status/update/{id}',[SocialLinkController::class, 'status'])->name('status.update');
     });
 });
 

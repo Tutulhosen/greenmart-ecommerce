@@ -115,6 +115,34 @@
       </ul>
     </li>
 
+    {{-- setting  --}}
+    <li class="menu-item">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon fa-brands fa-first-order"></i>
+        <div class="text-truncate" data-i18n="Layouts">Settings</div>
+      </a>
+
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="{{route('admin.top-header.list')}}" class="menu-link">
+            <div class="text-truncate" data-i18n="Without menu">Top Header</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="{{route('admin.logo.list')}}" class="menu-link">
+            <div class="text-truncate" data-i18n="Without menu">Logo</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="{{route('admin.social_link.list')}}" class="menu-link">
+            <div class="text-truncate" data-i18n="Without menu">Social Link</div>
+          </a>
+        </li>
+       
+      </ul>
+    </li>
+
+    
     
   </ul>
 </aside>

@@ -4,22 +4,23 @@
 @section('main-content')
     <div class="container">
         <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6">
+            <div class="col-4"></div>
+            <div class="col-4">
                 <div class="card mt-5">
                     <div class="card">
                         <div class="card-body">
                             <div class="headline">
-                                <h3 class="text-center">Create A New Category</h3>
+                                <h3 class="text-center">Update</h3>
                             </div>
                             <br>
                             <form class="forms-sample" id="myform">
+                                @csrf
                                 <div class="form-group">
-                                    <label for="name">Category Name</label>
-                                    <input type="text" class="form-control" id="category" placeholder="Category name">
+                                    <label for="name">Title</label>
+                                    <input type="text" class="form-control" id="name" value="{{$top_header_info->title}}" placeholder="Username">
                                 </div>
                                 <br>
-                                <button type="button" class="btn btn-success mr-2" id="cat_subnit_btn">Submit</button>
+                                <button type="button" class="btn btn-success mr-2" id="update_btn" value="{{$top_header_info->id}}">Submit</button>
                                 <button class="btn btn-dark">Cancel</button>
                             </form>
                         </div>
@@ -28,7 +29,7 @@
                     
                 </div>
             </div>
-            <div class="col-3"></div>
+            <div class="col-4"></div>
         </div>
     </div>
 @endsection
@@ -40,33 +41,43 @@
 
     $(document).ready(function(){
         
-        $('#cat_subnit_btn').on('click', function(){
-        let name = $('#category').val();
+        $('#update_btn').on('click', function(){
+        let name = $('#name').val();
+        let id = $(this).val();
+       
+        
 
         if (name == '') {
-            showToast('Enter A Category Name', 'error');
+            showToast('Enter A Title', 'error');
             return; 
         }
 
+        
 
         let formData = new FormData();
         formData.append('name', name);
+        formData.append('id', id);
         formData.append('_token', '{{ csrf_token() }}'); 
 
         $.ajax({
-            url: '{{ route('admin.category.store') }}', 
+            url: '{{ route('admin.top-header.update') }}', 
             method: 'POST',
             data: formData,
             contentType: false, 
-            processData: false,
+            processData: false, 
             success: function(response) {
                 if (response.status==true) {
                     
                     showToast(response.success, 'success');
                     setTimeout(function() {
                         // Redirect to the list page
-                        window.location.href = '/admin/category/list';  
+                        window.location.href = '/admin/top-header/list';  
                     }, 1500);
+                    
+                }
+                if (response.status==false) {
+                    
+                    showToast(response.error, 'success');
                     
                 }
                 

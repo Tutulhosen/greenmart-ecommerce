@@ -197,6 +197,7 @@ class FrontendController extends Controller
         }
         // dd();
         $cart = session()->get('cart', []);
+        // dd($cart);
         $subtotal = 0;
         $discount = 0;
         $shipping = 0;
@@ -209,6 +210,7 @@ class FrontendController extends Controller
         $total = $subtotal - $discount + $shipping;
 
         $data['category'] = DB::table('category')->get();
+        $data['cart'] = $cart;
         $data['subtotal'] = $subtotal;
         $data['discount'] = $discount;
         $data['shipping'] = $shipping;
@@ -220,6 +222,7 @@ class FrontendController extends Controller
 
     public function checkout(Request $request)
     {
+        // dd($request->all());
         // Validate the incoming request
         $request->validate([
             'full_name' => 'required|string|max:255',
@@ -229,37 +232,52 @@ class FrontendController extends Controller
             'delivery_address' => 'required|string|max:255',
             'payment_method' => 'required|string',
         ]);
-        // dd($request->all());
-        // Insert order details into the database and get the order ID
-        $order_id = DB::table('customer_order')->insertGetId([
-            'product_id' => $request->input('product_id'),
-            'total_price' => $request->input('total_amount'),
-            'products_qty' => $request->input('qty'),
-            'full_name' => $request->input('full_name'),
-            'delivery_address' => $request->input('delivery_address'),
-            'phone_number' => $request->input('phone_number'),
-            'additional_number' => $request->input('additional_number'),
-            'email_address' => $request->input('email_address'),
-            'additional_information' => $request->input('additional_information'),
-            'payment_method' => $request->input('payment_method'),
-        ]);
-
-        // Fetch order details for confirmation
-        $order_data = DB::table('customer_order')
-            ->join('products', 'products.id', 'customer_order.product_id')
-            ->where('customer_order.id', $order_id)
-            // ->select('products.title as title', 'products.price as price', 'products.discount as discount')
+        $product_ids = $request->input('product_ids');
+        $quantities = $request->input('quantities');
+         // Retrieve the last order_code
+         $lastOrder = DB::table('customer_order')
+            ->orderBy('id', 'desc')
+            ->whereNotNull('order_code')
             ->first();
-        // dd($order_id);    
-        // $title = $order_data->title ?? ' ';
-        // $price = $order_data->price ?? 0;
-        // $discount = $order_data->discount ? (int)$order_data->discount : 0;
-        // $discount_price = $price - $discount;
+        
+        
+        $newOrderNumber = 1;
 
-        // You might want to process payment here or redirect to a payment gateway
+        if ($lastOrder) {
+            
+            $lastOrderCode = $lastOrder->order_code;
+            $lastOrderNumber = (int)str_replace('GM-', '', $lastOrderCode);
+            $newOrderNumber = $lastOrderNumber + 1;
+        }
+
+        // Format the new order code 
+        $newOrderCode = 'GM-' . str_pad($newOrderNumber, 2, '0', STR_PAD_LEFT);
+        
+        // Insert order details into the database and get the order ID
+        foreach ($product_ids as $index => $product_id) {
+            // dd(Auth::guard('customer')->user()->id);
+           $id= DB::table('customer_order')->insertGetId([
+                'customer_id' =>Auth::guard('customer')->user()->id ?? null,
+                'product_id' => $product_id,
+                'products_qty' => $quantities[$index],
+                'total_price' => $request->input('total'), 
+                'full_name' => $request->input('full_name'),
+                'delivery_address' => $request->input('delivery_address'),
+                'phone_number' => $request->input('phone_number'),
+                'email_address' => $request->input('email_address'),
+                'additional_information' => $request->input('additional_information'),
+                'payment_method' => $request->input('payment_method'),
+                'order_code' => $newOrderCode
+            ]);
+            if (!empty($id)) {
+                session()->forget('cart');
+            }
+            
+        }
+
 
         // Redirect with success message
-        return redirect()->route('shop.checkout')->with('success', 'Order placed successfully.');
+        return redirect()->route('user.profile')->with('success', 'Order placed successfully.');
     }
 
 

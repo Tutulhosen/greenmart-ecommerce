@@ -4,73 +4,78 @@
 @section('main-content')
     <div class="container">
         <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6">
+            <div class="col-4"></div>
+            <div class="col-4">
                 <div class="card mt-5">
                     <div class="card">
                         <div class="card-body">
                             <div class="headline">
-                                <h3 class="text-center">Add A Slider Image</h3>
+                                <h4 class="text-center">Update </h4>
                             </div>
                         
                             <form>
                                 <div class="mb-3">
-                                  <label for="imageUpload" class="form-label">Upload Image</label>
-                                  <input type="file" class="form-control" name="img[]" id="imageUpload" accept="image/*">
+                                    <label for="imageUpload" class="form-label">Upload Image</label>
+                                    <input type="file" class="form-control" name="img[]" id="imageUpload" accept="image/*">
                                 </div>
                                 <div class="mb-3">
-                                  <img id="imagePreview" class="image-preview" src="https://via.placeholder.com/300" alt="Image Preview">
+                                    <img id="imagePreview" class="image-preview" src="{{asset('images/logo/'.$logo_info->image)}}" alt="Image Preview">
                                 </div>
-                                <button type="button" class="btn btn-primary mr-2" id="slider_subnit_btn">Submit</button>
+                                <button type="button" class="btn btn-primary mr-2" id="update_btn" value="{{$logo_info->id}}">Submit</button>
                                 <button class="btn btn-dark">Cancel</button>
                             </form>
                         </div>
+                        
                         
                     </div>
                     
                 </div>
             </div>
-            <div class="col-3"></div>
+            <div class="col-4"></div>
         </div>
     </div>
 @endsection
 @section('scripts')
+    
 
 <script>
     
 
     $(document).ready(function(){
         
-        $('#slider_subnit_btn').on('click', function(){
-
+        $('#update_btn').on('click', function(){
+       
+            let id = $(this).val();
             var image = $('#imageUpload')[0].files[0];
 
 
-            // alert(image);
-            if (!image) {
-                showToast('Select A Slider Image', 'error');
-                return; 
-            }
-
             let formData = new FormData();
+            formData.append('id', id);
             formData.append('image', image);
             formData.append('_token', '{{ csrf_token() }}'); 
 
             $.ajax({
-                url: '{{ route('admin.slider.store') }}', 
+                url: '{{ route('admin.logo.update') }}', 
                 method: 'POST',
                 data: formData,
                 contentType: false, 
-                processData: false,
+                processData: false, 
                 success: function(response) {
                     if (response.status==true) {
-                        
+                       
+                    
                         showToast(response.success, 'success');
-
                         setTimeout(function() {
                             // Redirect to the list page
-                            window.location.href = '/admin/slider/list';  
+                            window.location.href = '/admin/logo/list';  
                         }, 1500);
+                        
+                    }
+                    if (response.status==false) {
+                        
+                        showToast(response.error, 'success');
+                        
+                        
                     }
                     
                 },

@@ -40,5 +40,15 @@ if (!function_exists('order_status')) {
     }
 }
 
+if (!function_exists('formatDate')) {
+    function formatDate($dateString) {
+        // Create a DateTime object from the input string
+        $date = new DateTime($dateString);
+        
+        // Format the date as 'd M, Y' (21 Sep, 2024)
+        return $date->format('d M, Y');
+    }
+}
+
 
 ?>

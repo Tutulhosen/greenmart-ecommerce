@@ -10,9 +10,9 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="headline">
-                                <h3 class="text-center">Add A Slider Image</h3>
+                                <h3 class="text-center">Create  New </h3>
                             </div>
-                        
+                            <br>
                             <form>
                                 <div class="mb-3">
                                   <label for="imageUpload" class="form-label">Upload Image</label>
@@ -21,7 +21,7 @@
                                 <div class="mb-3">
                                   <img id="imagePreview" class="image-preview" src="https://via.placeholder.com/300" alt="Image Preview">
                                 </div>
-                                <button type="button" class="btn btn-primary mr-2" id="slider_subnit_btn">Submit</button>
+                                <button type="button" class="btn btn-primary mr-2" id="subnit_btn">Submit</button>
                                 <button class="btn btn-dark">Cancel</button>
                             </form>
                         </div>
@@ -35,14 +35,14 @@
     </div>
 @endsection
 @section('scripts')
+    
 
 <script>
     
 
     $(document).ready(function(){
         
-        $('#slider_subnit_btn').on('click', function(){
-
+        $('#subnit_btn').on('click', function(){
             var image = $('#imageUpload')[0].files[0];
 
 
@@ -57,7 +57,7 @@
             formData.append('_token', '{{ csrf_token() }}'); 
 
             $.ajax({
-                url: '{{ route('admin.slider.store') }}', 
+                url: '{{ route('admin.logo.store') }}', 
                 method: 'POST',
                 data: formData,
                 contentType: false, 
@@ -69,14 +69,14 @@
 
                         setTimeout(function() {
                             // Redirect to the list page
-                            window.location.href = '/admin/slider/list';  
+                            window.location.href = '/admin/logo/list';  
                         }, 1500);
                     }
                     
                 },
                 
             });
-        });
+    });
 
 
 
