@@ -116,26 +116,34 @@ class FrontendController extends Controller
     public function category_page($id){
         // dd($id);
         if ($id!=1) {
-            $all_products = DB::table('products')->where('category_id', $id)->latest()->paginate(28);
+            if ($id==4) {
+                $all_products = DB::table('products')->whereNotNull('discount')->latest()->paginate(28);
+                // dd($all_products);
+            } else {
+                $all_products = DB::table('products')->where('category_id', $id)->latest()->paginate(28);
+                // dd($all_products);
+            }
+            
+            
 
-        $product_arr = [];
-        foreach ($all_products as $value) {
-            $product = [];
-            $product['id'] = $value->id;
-            $product['title'] = $value->title;
-            $product['price'] = $value->price;
-            $product['discount'] = $value->discount;
-            $product['discount_price'] = $value->discount ? $value->price - $value->discount : $value->price;
-            $product['thumbnail'] = $value->thumbnail;
+            $product_arr = [];
+            foreach ($all_products as $value) {
+                $product = [];
+                $product['id'] = $value->id;
+                $product['title'] = $value->title;
+                $product['price'] = $value->price;
+                $product['discount'] = $value->discount;
+                $product['discount_price'] = $value->discount ? $value->price - $value->discount : $value->price;
+                $product['thumbnail'] = $value->thumbnail;
 
-            array_push($product_arr, $product);
-        }
+                array_push($product_arr, $product);
+            }
+            // dd($product_arr);
+            $data['products'] = $product_arr;
+            $data['pagination'] = $all_products; 
+            $data['category'] = DB::table('category')->get();
 
-        $data['products'] = $product_arr;
-        $data['pagination'] = $all_products; 
-        $data['category'] = DB::table('category')->get();
-
-        return view('frontend.pages.category-page')->with($data);
+            return view('frontend.pages.category-page')->with($data);
 
         } else {
             return redirect()->route('home');
@@ -223,6 +231,7 @@ class FrontendController extends Controller
     public function checkout(Request $request)
     {
         // dd($request->all());
+        
         // Validate the incoming request
         $request->validate([
             'full_name' => 'required|string|max:255',
@@ -270,14 +279,22 @@ class FrontendController extends Controller
                 'order_code' => $newOrderCode
             ]);
             if (!empty($id)) {
-                session()->forget('cart');
+                $customer = Auth::guard('customer')->user();
+
+                // Remove all session data
+                session()->flush();
+
+                // Log the user back in by restoring the session
+                Auth::guard('customer')->login($customer);
+                return response()->json(['success' => true, 'message' => 'Order placed successfully']);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Order failed']);
             }
             
         }
 
 
-        // Redirect with success message
-        return redirect()->route('user.profile')->with('success', 'Order placed successfully.');
+        
     }
 
 
@@ -339,7 +356,7 @@ class FrontendController extends Controller
             "product_id" => $productId
         ];
         session()->put('cart', $cart);
-;
+
         session()->put('cart_count', count($cart));
 
         $new=session()->get('cart', []);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -24,4 +25,100 @@ class ProfileController extends Controller
         // dd($data);
         return view('frontend.pages.profile')->with($data);
     }
+
+    //invoice
+    public function invoice($id){
+        $data['category'] = DB::table('category')->get();
+        $single_order=DB::table('customer_order')->where('id', $id)->first();
+        $order_invoice=DB::table('products')
+        ->join('customer_order', 'customer_order.product_id', 'products.id')
+        ->where('customer_order.order_code', $single_order->order_code)
+        ->select('products.title as title','customer_order.products_qty', 'products.price as offer_cost', 'products.discount as discount')
+        ->get();
+        
+        $data['single_order']=$single_order;
+        $data['order_invoice']=$order_invoice;
+       
+        return view('frontend.pages.invoice')->with($data);
+    }
+
+    //profile update page
+    public function profile_update_page(){
+        $data['category'] = DB::table('category')->get();
+        return view('frontend.pages.profile_update')->with($data);
+    }
+
+    //profile update
+    public function profile_update(Request $request){
+        // Validation
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string|max:15',
+        
+        ]);
+
+        // Fetch current user
+        $user = Auth::guard('customer')->user();
+        if ($request->filled('password')) {
+            $password = Hash::make($request->password);
+        }else{
+            $password = $user->password;
+        }
+    
+        DB::table('customers')->where('id', $user->id)->update([
+            'name' =>$request->name,
+            'email' =>$request->email,
+            'phone' =>$request->phone,
+            'password' =>$password,
+            
+        ]);
+
+
+        return response()->json(['success' => true, 'message' => 'Profile updated successfully']);
+    }
+
+    //address update page
+    public function address_update_page(){
+        $data['category'] = DB::table('category')->get();
+        $data['division']=DB::table('division')->get();
+        return view('frontend.pages.address_update')->with($data);
+    }
+
+    //address update
+    public function address_update(Request $request){
+       
+
+       
+        $user = Auth::guard('customer')->user();
+        
+    
+        DB::table('customers')->where('id', $user->id)->update([
+            'name' =>$request->name,
+            'email' =>$request->email,
+            
+        ]);
+
+
+        return response()->json(['success' => true, 'message' => 'Profile updated successfully']);
+    }
+
+     // Get districts based on division ID
+     public function get_district(Request $request)
+     {
+         $districts = DB::table('district')->where('division_id', $request->division_id)->get();
+         return response()->json(['districts' => $districts]);
+     }
+ 
+     // Get upazilas based on district ID
+     public function get_upazila(Request $request)
+     {
+         $upazilas = DB::table('upazila')->where('district_id', $request->district_id)->get();
+         return response()->json(['upazilas' => $upazilas]);
+     }
+
+
+
+
+
 }

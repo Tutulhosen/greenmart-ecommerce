@@ -6,7 +6,7 @@
         
             <!-- Dashboard Header -->
             <h1>Welcome to Your Dashboard</h1>
-            <p>Manage your profile, view recent orders, wishlist, and more.</p>
+            <p>Manage your profile, view recent orders and more.</p>
             
             <!-- Dashboard Content -->
             <div class="dashboard-content">
@@ -17,7 +17,7 @@
                     <p><strong>Name:</strong> {{Auth::guard('customer')->user()->name}}</p>
                     <p><strong>Email:</strong> {{Auth::guard('customer')->user()->email}}</p>
                     <p><strong>Phone:</strong> {{Auth::guard('customer')->user()->phone}}</p>
-                    <button class="btn">Edit Profile</button>
+                    <a href="{{route('user.profile.update.page')}}" class="btn w-100">Edit Profile</a>
                 </div>
                 
                 <!-- Middle Column - Recent Orders -->
@@ -30,6 +30,7 @@
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Total</th>
+                                <th>Invoice</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,6 +41,7 @@
                                     <td>{{formatDate($item->order_date)}}</td>
                                     <td class="status shipped">{{order_status($item->order_status)}}</td>
                                     <td>{{$item->total_price}}</td>
+                                    <td style="text-align:center"><a href="{{route('product.invoice', $item->max_id)}}"><i id="invoice" class="fa-solid fa-file-lines" style="font-size: 30px; text-align:center; cursor:pointer; color:green"></i></a></td>
                                 </tr>
                                 @endforeach
                             @else
@@ -55,40 +57,45 @@
             <div class="dashboard-content">
                 
                 <!-- Left Column - Wishlist -->
-                <div class="wishlist">
-                    <h2>Your Wishlist</h2>
-                    <ul>
-                        <li>
-                            <span>Product 1</span>
-                            <button class="btn-remove">Remove</button>
-                        </li>
-                        <li>
-                            <span>Product 2</span>
-                            <button class="btn-remove">Remove</button>
-                        </li>
-                        <li>
-                            <span>Product 3</span>
-                            <button class="btn-remove">Remove</button>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Right Column - Saved Addresses -->
                 <div class="saved-addresses">
                     <h2>Saved Addresses</h2>
-                    <p><strong>Home:</strong> 123 Main St, Cityville</p>
-                    <p><strong>Office:</strong> 456 Corporate Ave, Business City</p>
-                    <button class="btn">Manage Addresses</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2 style="font-size: 24px;">Present Addresses</h2>
+                            <p><strong>Home:</strong> 123 Main St, Cityville</p>
+                            <p><strong>Office:</strong> 456 Corporate Ave, Business City</p>
+                           
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Devivery Addresses</h4>
+                            <p><strong>Home:</strong> 123 Main St, Cityville</p>
+                            <p><strong>Office:</strong> 456 Corporate Ave, Business City</p>
+                           
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                    <a href="{{route('user.address.update.page')}}" class="btn w-100">Manage Addresses</a>
+                    
                 </div>
+
+                <!-- Right Column - Saved Addresses -->
+                {{-- <div class="account-settings">
+                    <h2>Account Settings</h2>
+                    <p>Manage your account settings such as password, payment methods, and more.</p>
+                    <button class="btn">Update Password</button>
+                   
+                </div> --}}
+                
+                
             </div>
     
             <!-- Account Settings Section -->
-            <div class="account-settings">
+            {{-- <div class="account-settings">
                 <h2>Account Settings</h2>
                 <p>Manage your account settings such as password, payment methods, and more.</p>
                 <button class="btn">Update Password</button>
                 <button class="btn">Payment Methods</button>
-            </div>
+            </div> --}}
         </div>
     </section>
 @endsection

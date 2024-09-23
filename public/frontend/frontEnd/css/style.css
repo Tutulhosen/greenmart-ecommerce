@@ -1028,6 +1028,16 @@ span, h1, h2, h3, h4, h5, h6, p, a {
     text-align: center;
 }
 
+.dashboard-container-new {
+    width: 100%;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
 h1 {
     color: #333;
 }
@@ -1130,7 +1140,7 @@ thead tr {
 
 /* Saved Addresses */
 .saved-addresses {
-    width: 45%;
+    width: 100%;
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
@@ -1142,9 +1152,9 @@ thead tr {
 
 /* Account Settings */
 .account-settings {
-    margin-top: 40px;
-    padding: 20px;
+    width: 45%;
     background-color: #f9f9f9;
+    padding: 20px;
     border-radius: 10px;
 }
 
@@ -1173,11 +1183,25 @@ thead tr {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 50%;
+    width: 100%;
+    margin: 40px auto;
+}
+.form-container-new {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
     margin: 40px auto;
 }
 
 .form-container h2 {
+    color: #4CAF50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-container-new h2 {
     color: #4CAF50;
     text-align: center;
     margin-bottom: 20px;
@@ -1681,3 +1705,5 @@ button.btn:hover {
         color: #333;
         margin-bottom: 15px;
     }
+
+    

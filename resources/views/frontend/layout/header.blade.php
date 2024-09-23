@@ -175,7 +175,7 @@
                     <div class="cart d-inline-block position-relative">
                         <a href="{{route('shopping.card')}}"><i style="color: #fff" class="fa fa-2x fa-shopping-cart"></i></a>
                         <span id="cart-count" class="position-absolute badge rounded-pill bg-danger" style="color: white; font-size: 12px; padding: 5px 8px; top: 0; right: -22px;">
-                            {{-- {{ session('cart_count', 0) }}  --}}
+                            
                         </span>
                     </div>
                     

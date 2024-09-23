@@ -45,8 +45,15 @@ Route::get('/search', [FrontendController::class, 'search'])->name('search.resul
 
 
 Route::get('/profile', [ProfileController::class, 'profile'])->name('user.profile');
+Route::get('/profile/update/page', [ProfileController::class, 'profile_update_page'])->name('user.profile.update.page');
+Route::post('/profile/update', [ProfileController::class, 'profile_update'])->name('user.profile.update');
+Route::get('/address/update/page', [ProfileController::class, 'address_update_page'])->name('user.address.update.page');
+Route::post('/address/update', [ProfileController::class, 'address_update'])->name('user.address.update');
+Route::get('/invoice/{id}', [ProfileController::class, 'invoice'])->name('product.invoice');
 
-
+//get dependency data route
+Route::post('get/district',[ProfileController::class, 'get_district'])->name('get.district');
+Route::post('get/upazila',[ProfileController::class, 'get_upazila'])->name('get.upazila');
 
 // Route to clear cart session
 Route::post('/clear-cart-session', [FrontendController::class, 'clearCartSession']);
