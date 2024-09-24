@@ -21,6 +21,32 @@
 </script>
 
 <script>
+    document.querySelectorAll('.carousel-item').forEach(item => {
+    item.addEventListener('mousemove', function(e) {
+        const img = this.querySelector('img');
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;  // Get the horizontal coordinate
+        const y = e.clientY - rect.top;   // Get the vertical coordinate
+
+        // Calculate the position of the image
+        const xPercent = x / rect.width * 100;
+        const yPercent = y / rect.height * 100;
+
+        // Move the image
+        img.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+    });
+
+    item.addEventListener('mouseleave', function() {
+        const img = this.querySelector('img');
+        img.style.transformOrigin = 'center center';  // Reset the transform origin
+    });
+});
+
+</script>
+    
+
+<script>
+
     $(document).ready(function () {
         $(".owl-carousel").owlCarousel({
             margin: 15,
@@ -48,8 +74,49 @@
         });
 
         $('.owl-nav').remove();
+
+        
+
     });
+
+    $(document).on('click', '.quick_view', function(e) {
+        
+        e.preventDefault(); // Prevent the default link behavior
+
+        var productId = $(this).data('id'); // Get the product ID from the data attribute
+    
+        // Make an AJAX request to fetch the product details
+        $.ajax({
+            url: '{{ route("frontend.single.product.quick_view") }}', // Use the named route in the AJAX call
+            method: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}", 
+                 product_id: productId 
+                },
+            success: function(response) {
+             
+                $('#quickViewModal .modal-body').html(response);
+                $('#quickViewModal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $('#quickViewModal').modal('show'); 
+            },
+          
+        });
+    });
+
+
+    toastr.options = {
+        "closeButton": true,  // Enables the close (X) button
+        "progressBar": true,  // Optional: Adds a progress bar to the notification
+        "positionClass": "toast-top-right",  // Optional: Adjusts the position of the notification
+        "timeOut": "5000",    // Time after which the notification automatically disappears
+        "extendedTimeOut": "2000",  // Time to wait for a user action before the notification disappears
+    };
 </script>
+
+
 
 
 <script>
@@ -195,6 +262,7 @@
         });
 
         $('.add_cart_btn_direct').click(function (e) {
+            
             e.preventDefault();
             // Get the product details
             var productId = $(this).data('id');
@@ -295,3 +363,4 @@
 
     
 </script>
+

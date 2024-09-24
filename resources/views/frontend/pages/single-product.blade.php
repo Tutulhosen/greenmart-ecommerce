@@ -135,14 +135,7 @@
                         </table>
                     </div>
 
-                    <div class="feature-products d-md-block d-none">
-                        <p>প্রয়োজনীয় প্রোডাক্ট</p>
-                        <div class="feature-products-wrapper">
-                            <table>
-                                <!-- Replace with dynamic feature products if needed -->
-                            </table>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
 
@@ -169,7 +162,11 @@
     </div>
     
 </section>
+<script>
+ 
+   
 
+</script>
 @endsection
 
 

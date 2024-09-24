@@ -1150,6 +1150,63 @@ thead tr {
     color: #4CAF50;
 }
 
+.saved-addresses .col-md-6 p {
+    text-align: left;
+}
+
+.product-item {
+    position: relative;
+    display: inline-block;
+}
+
+.quick_view {
+    display: none; /* Hide by default */
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for the element's own dimensions */
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px; /* You can adjust the padding as needed */
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2; /* Make sure it's above other elements */
+}
+
+.product-item:hover .quick_view {
+    display: inline-block; /* Show on hover */
+}
+
+.quick_view i {
+    font-size: 1.5rem;
+    color: #fca204;
+}
+
+
+.products-details-section .carousel-inner .carousel-item img {
+    transition: transform 0.3s ease-in-out;  /* Smooth zoom transition */
+}
+
+.products-details-section .carousel-inner .carousel-item:hover img {
+    transform: scale(1.5);  /* Scale the image to 1.5x its original size */
+    cursor: zoom-in;  /* Show a zoom cursor on hover */
+}
+
+.products-details-section .carousel-inner .carousel-item img.active {
+    transform: scale(1.5);  /* Ensure the image stays zoomed */
+    cursor: zoom-in;  /* Show a zoom cursor */
+}
+
+.products-details-section .carousel-inner .carousel-item {
+    overflow: hidden;  /* Hide overflow to prevent scrollbars */
+    position: relative;
+}
+
+
+
+
+
+
+
 /* Account Settings */
 .account-settings {
     width: 45%;
@@ -1183,7 +1240,7 @@ thead tr {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    width: 45%;
     margin: 40px auto;
 }
 .form-container-new {
@@ -1193,6 +1250,10 @@ thead tr {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     margin: 40px auto;
+}
+
+#updateForm label{
+    text-align: left;
 }
 
 .form-container h2 {

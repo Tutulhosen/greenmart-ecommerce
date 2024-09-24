@@ -61,16 +61,19 @@
                     <h2>Saved Addresses</h2>
                     <div class="row">
                         <div class="col-md-6">
-                            <h2 style="font-size: 24px;">Present Addresses</h2>
-                            <p><strong>Home:</strong> 123 Main St, Cityville</p>
-                            <p><strong>Office:</strong> 456 Corporate Ave, Business City</p>
+                            <h2 style="font-size: 24px;">Permanent Addresses</h2><br>
+                            <p><strong>Division:</strong> {{convert_div_id_to_name($customer_address->per_div)}}</p>
+                            <p><strong>district:</strong> {{convert_dis_id_to_name($customer_address->per_dis)}}</p>
+                            <p><strong>Upazila:</strong> {{convert_upa_id_to_name($customer_address->per_upa)}}</p>
+                            <p><strong>Details:</strong> {{$customer_address->per_details}}</p>
                            
                         </div>
                         <div class="col-md-6">
-                            <h4>Devivery Addresses</h4>
-                            <p><strong>Home:</strong> 123 Main St, Cityville</p>
-                            <p><strong>Office:</strong> 456 Corporate Ave, Business City</p>
-                           
+                            <h2 style="font-size: 24px;">Present Addresses</h2><br>
+                            <p><strong>Division:</strong> {{convert_div_id_to_name($customer_address->pre_div)}}</p>
+                            <p><strong>district:</strong> {{convert_dis_id_to_name($customer_address->pre_dis)}}</p>
+                            <p><strong>Upazila:</strong> {{convert_upa_id_to_name($customer_address->pre_upa)}}</p>
+                            <p><strong>Details:</strong> {{$customer_address->pre_details}}</p>
                         </div>
                         <div class="col-md-6"></div>
                     </div>

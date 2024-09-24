@@ -19,6 +19,7 @@
 
                         <!-- First Carousel -->
                         <div class="owl-carousel mb-3">
+                            
                             @foreach($hot_deal->slice(0, ceil($hot_deal->count() / 2)) as $deal)
                                 <div class="hot-deals-product">
                                     <a href="{{ route('frontend.single.product.page', $deal['id']) }}">

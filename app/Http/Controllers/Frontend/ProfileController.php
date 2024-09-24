@@ -22,6 +22,14 @@ class ProfileController extends Controller
             ->orderBy('max_id', 'DESC')
             ->limit(3)
             ->get();
+            $user = Auth::guard('customer')->user();
+
+        $customer_address=DB::table('customer_address')->where('customer_id', $user->id)->first();
+        if (!empty($customer_address)) {
+            $data['customer_address']=$customer_address;
+        } else {
+            $data['customer_address']=null;
+        }
         // dd($data);
         return view('frontend.pages.profile')->with($data);
     }
@@ -82,25 +90,41 @@ class ProfileController extends Controller
     public function address_update_page(){
         $data['category'] = DB::table('category')->get();
         $data['division']=DB::table('division')->get();
+
+        $user = Auth::guard('customer')->user();
+
+        $customer_address=DB::table('customer_address')->where('customer_id', $user->id)->first();
+        if (!empty($customer_address)) {
+            $data['customer_address']=$customer_address;
+        } else {
+            $data['customer_address']=null;
+        }
+        
+      
+
         return view('frontend.pages.address_update')->with($data);
     }
 
     //address update
     public function address_update(Request $request){
-       
-
-       
-        $user = Auth::guard('customer')->user();
-        
     
-        DB::table('customers')->where('id', $user->id)->update([
-            'name' =>$request->name,
-            'email' =>$request->email,
-            
+       $user = Auth::guard('customer')->user();
+        
+       $id= DB::table('customer_address')->updateOrInsert(['customer_id' => $user->id], [
+            'customer_id' => $user->id,
+            'per_div' => $request->division,
+            'per_dis' => $request->district,
+            'per_upa' => $request->upazila,
+            'per_details' => $request->address,
+            'pre_div' => $request->p_division,
+            'pre_dis' => $request->p_district,
+            'pre_upa' => $request->p_upazila,
+            'pre_details' => $request->p_address,
         ]);
+        
 
 
-        return response()->json(['success' => true, 'message' => 'Profile updated successfully']);
+        return response()->json(['success' => true, 'message' => 'Information updated successfully']);
     }
 
      // Get districts based on division ID

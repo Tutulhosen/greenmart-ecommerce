@@ -50,5 +50,27 @@ if (!function_exists('formatDate')) {
     }
 }
 
+if (!function_exists('convert_div_id_to_name')) {
+    function convert_div_id_to_name($id) {
+        $div_name=DB::table('division')->where('id', $id)->select('division_name_en')->first();
+        return $div_name->division_name_en;
+    }
+}
+
+if (!function_exists('convert_dis_id_to_name')) {
+    function convert_dis_id_to_name($id) {
+        $dis_name=DB::table('district')->where('id', $id)->select('district_name_en')->first();
+        return $dis_name->district_name_en;
+    }
+}
+
+if (!function_exists('convert_upa_id_to_name')) {
+    function convert_upa_id_to_name($id) {
+        $upa_name=DB::table('upazila')->where('id', $id)->select('upazila_name_en')->first();
+        return $upa_name->upazila_name_en;
+    }
+}
+
+
 
 ?>

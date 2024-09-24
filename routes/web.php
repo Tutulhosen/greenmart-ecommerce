@@ -42,8 +42,9 @@ Route::post('/cart/update/{id}', [FrontendController::class, 'update'])->name('c
 Route::post('/cart/add', [FrontendController::class, 'cart_add'])->name('cart.add');
 Route::delete('/cart/remove/{id}', [FrontendController::class, 'remove'])->name('cart.remove');
 Route::get('/search', [FrontendController::class, 'search'])->name('search.results');
+Route::post('/single-product/quick_view', [FrontendController::class, 'single_product_quick_view'])->name('frontend.single.product.quick_view');
 
-
+//customer profile
 Route::get('/profile', [ProfileController::class, 'profile'])->name('user.profile');
 Route::get('/profile/update/page', [ProfileController::class, 'profile_update_page'])->name('user.profile.update.page');
 Route::post('/profile/update', [ProfileController::class, 'profile_update'])->name('user.profile.update');

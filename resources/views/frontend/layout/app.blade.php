@@ -72,10 +72,7 @@
         </div>
     </div>
 
-<!--Whatsapp--add--from-here-->
-
-
-<!--Whatsapp--add--from-End-->
+    
 
 <script src="{{asset('frontend/frontEnd/js/jquery-3.3.1.min.js')}}"></script>
 <script src="{{asset('frontend/frontEnd/js/bootstrap.bundle.min.js')}}"></script>
@@ -86,7 +83,7 @@
 
 <script src="{{asset('frontend/backEnd/assets/vendor/toastr/toastr.min.js')}}"></script>
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 @include('frontend.pages.main-js')
 

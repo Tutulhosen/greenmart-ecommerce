@@ -87,7 +87,7 @@ class FrontendController extends Controller
         
         // Convert hot deal array to collection
         $data['hot_deal'] = collect($hot_deal_arr);
-        
+    
         $all_products = DB::table('products')->latest()->paginate(28); 
 
         $product_arr = [];
@@ -196,6 +196,32 @@ class FrontendController extends Controller
     
         return view('frontend.pages.single-product', $data);
     }
+
+    public function single_product_quick_view(Request $request) {
+        
+        $product_id = $request->input('product_id');
+     
+        $single_product = DB::table('products')->where('id', $product_id)->first();
+       
+       
+        $gallery_images = DB::table('gallery')->where('product_id', $single_product->id)->get();
+        
+        $product = [
+            'id' => $single_product->id,
+            'product_code' => $single_product->product_code,
+            'title' => $single_product->title,
+            'price' => $single_product->price,
+            'discount' => $single_product->discount,
+            'discount_price' => $single_product->discount ? $single_product->price - $single_product->discount : $single_product->price,
+            'description' => $single_product->description,
+            'thumbnail' => $single_product->thumbnail,
+            'gallery' => $gallery_images->pluck('image_name')->toArray(),
+        ];
+    
+        // Return the view with just the product HTML
+        return view('frontend.pages.quickView', compact('product'));
+    }
+    
 
     public function shop_checkout()
     {
