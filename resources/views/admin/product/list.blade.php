@@ -2,10 +2,10 @@
 
 
 @section('main-content')
-<div class="container pt-5">
+<div class="container pt-5" style="padding-bottom: 20px">
     <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
+        
+        <div class="col-12">
             <div class="card">
                 <h3 class="card-header text-center bg-success text-white">Slider List</h3>
                 <div class="table-responsive text-nowrap">
@@ -52,7 +52,13 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                           <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{ route('admin.product.update.page', $product['id']) }}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                            <a class="dropdown-item" href="{{ route('admin.product.update.page', ['id' => $product['id'], 'type' => 'update']) }}">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a>
+                                            
+                                            <a class="dropdown-item" href="{{ route('admin.product.update.page', ['id' => $product['id'], 'type' => 'copy']) }}">
+                                                <i class="bx bx-edit-alt me-1"></i> Copy
+                                            </a>
                                             <a class="dropdown-item" href="javascript:void(0);" id="product_dlt_btn" data-id="{{$product['id']}}"><i class="bx bx-trash me-1"></i> Delete</a>
                                           </div>
                                         </div>

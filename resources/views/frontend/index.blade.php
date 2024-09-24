@@ -50,6 +50,7 @@
                             <p class="mb-0" style="text-decoration: line-through;color: #b8b8b8">৳ {{ $product['price'] }}</p>
                             <p class="font-weight-bold mb-0" style="color: #fca204">৳ {{ $product['discount_price'] }}</p>
                         @else
+                        <br><br>    
                             <p class="font-weight-bold mb-0" style="color: #fca204">৳ {{ $product['price'] }}</p>
                         @endif
                             <p class="mb-0 prod_name"><a href="{{ route('frontend.single.product.page', $product['id']) }}">{{ $product['title'] }}</a></p>

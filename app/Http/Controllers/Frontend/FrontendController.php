@@ -88,7 +88,7 @@ class FrontendController extends Controller
         // Convert hot deal array to collection
         $data['hot_deal'] = collect($hot_deal_arr);
     
-        $all_products = DB::table('products')->latest()->paginate(28); 
+        $all_products = DB::table('products')->latest()->paginate(14); 
 
         $product_arr = [];
         foreach ($all_products as $value) {
@@ -148,6 +148,33 @@ class FrontendController extends Controller
         } else {
             return redirect()->route('home');
         }
+        
+        
+    }
+
+    
+    //shop page 
+    public function shop_page(){
+        $all_products = DB::table('products')->latest()->paginate(42);
+
+            $product_arr = [];
+            foreach ($all_products as $value) {
+                $product = [];
+                $product['id'] = $value->id;
+                $product['title'] = $value->title;
+                $product['price'] = $value->price;
+                $product['discount'] = $value->discount;
+                $product['discount_price'] = $value->discount ? $value->price - $value->discount : $value->price;
+                $product['thumbnail'] = $value->thumbnail;
+
+                array_push($product_arr, $product);
+            }
+            // dd($product_arr);
+            $data['products'] = $product_arr;
+            $data['pagination'] = $all_products; 
+            $data['category'] = DB::table('category')->get();
+
+            return view('frontend.pages.shop-page')->with($data);
         
         
     }
@@ -364,7 +391,7 @@ class FrontendController extends Controller
         $productId = $request->product_id;
         $qty = $request->qty;
         $price = $request->price;
-    
+        // dd($qty);
         // Fetch cart from session
         $cart = session()->get('cart', []);
     

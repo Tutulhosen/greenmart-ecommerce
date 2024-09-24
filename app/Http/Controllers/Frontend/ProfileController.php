@@ -28,9 +28,10 @@ class ProfileController extends Controller
         if (!empty($customer_address)) {
             $data['customer_address']=$customer_address;
         } else {
+           
             $data['customer_address']=null;
         }
-        // dd($data);
+      
         return view('frontend.pages.profile')->with($data);
     }
 

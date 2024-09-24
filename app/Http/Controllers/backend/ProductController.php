@@ -119,7 +119,8 @@ class ProductController extends Controller
     }
 
     // Product update page
-    public function productupdatePage($id){
+    public function productupdatePage($id, $type){
+        $data['type']=$type;
         $data['subcategory']=DB::table('subcategory')->get();
        
         $data['category']=DB::table('category')->get();
@@ -134,6 +135,7 @@ class ProductController extends Controller
     //product update
     public function productUpdate(Request $request){
         $product_id = $request->input('product_id');
+        $type = $request->input('type');
         $title = $request->input('title');
         $productCode = $request->input('product_code');
         $category_id = $request->input('category_id');
@@ -142,83 +144,145 @@ class ProductController extends Controller
         $discount = $request->input('discount');
         $quantity = $request->input('quantity');
 
-       
-       $previousImageName = DB::table('products')->where('id', $product_id)->value('thumbnail');
+        if ($type=='update') {
+            $previousImageName = DB::table('products')->where('id', $product_id)->value('thumbnail');
     
-        // For single file uploads
-        if ($request->hasFile('thumbnail_image')) {
-            
-            $thumbnailImage = $request->file('thumbnail_image');
-            $imageName = md5(time().'_'.rand()).'.'.$thumbnailImage->getClientOriginalExtension();
-            
-            $thumbnailImage->move(public_path('images/galleries'), $imageName);
-            if (!empty($previousImageName)) {
-                $previousImagePath = public_path('images/gallery') . '/' . $previousImageName;
-                if (file_exists($previousImagePath)) {
-                    unlink($previousImagePath);
-                }
-            }
-            
-        }else {
-            $imageName=$previousImageName;
-        }
-        try {
-            DB::beginTransaction();
-            $product_update= DB::table('products')->where('id', $product_id)->update([
-                'product_code' =>$productCode,
-                'title' =>$title,
-                'category_id' =>$category_id,
-                'quantity' =>$quantity,
-                'price' =>$price,
-                'discount' =>$discount,
-                'description' =>$description,
-                'thumbnail'  =>$imageName
-            ]);
-            
-
-            
-            
-            // For multiple file uploads
-            if ($request->hasFile('gallery_images')) {
-                $galleryImages = $request->file('gallery_images');
-                $previousgalleryImages = DB::table('gallery')->where('product_id', $product_id)->get();
+            // For single file uploads
+            if ($request->hasFile('thumbnail_image')) {
                 
-                // Unlink previous gallery images
-                foreach ($previousgalleryImages as $previousImage) {
-                    $previousImagePath = public_path('images/galleries') . '/' . $previousImage->image_name;
+                $thumbnailImage = $request->file('thumbnail_image');
+                $imageName = md5(time().'_'.rand()).'.'.$thumbnailImage->getClientOriginalExtension();
+                
+                $thumbnailImage->move(public_path('images/galleries'), $imageName);
+                if (!empty($previousImageName)) {
+                    $previousImagePath = public_path('images/gallery') . '/' . $previousImageName;
                     if (file_exists($previousImagePath)) {
                         unlink($previousImagePath);
                     }
-                    $previousgalleryImages = DB::table('gallery')->where('product_id', $product_id)->delete();
                 }
-                foreach ($galleryImages as $galleryImage) {
-                    $galleryImageName = md5(time().'_'.rand()).'.'.$galleryImage->getClientOriginalExtension();
-                    DB::table('gallery')->insert([
-                        'image_name' =>$galleryImageName,
-                        'image_title' =>$galleryImageName,
-                        'product_id' => $product_id
-                    ]);
-                   
-                    
-                    $galleryImage->move(public_path('images/galleries'), $galleryImageName);
-                    
-                }
+                
+            }else {
+                $imageName=$previousImageName;
             }
-            
-            // dd($product_update);
-            DB::commit();
-            
+            try {
+                DB::beginTransaction();
+                $product_update= DB::table('products')->where('id', $product_id)->update([
+                    'product_code' =>$productCode,
+                    'title' =>$title,
+                    'category_id' =>$category_id,
+                    'quantity' =>$quantity,
+                    'price' =>$price,
+                    'discount' =>$discount,
+                    'description' =>$description,
+                    'thumbnail'  =>$imageName
+                ]);
+                
 
-            
-        } catch (\Throwable $th) {
-            DB::rollBack();
-       
+                
+                
+                // For multiple file uploads
+                if ($request->hasFile('gallery_images')) {
+                    $galleryImages = $request->file('gallery_images');
+                    $previousgalleryImages = DB::table('gallery')->where('product_id', $product_id)->get();
+                    
+                    // Unlink previous gallery images
+                    foreach ($previousgalleryImages as $previousImage) {
+                        $previousImagePath = public_path('images/galleries') . '/' . $previousImage->image_name;
+                        if (file_exists($previousImagePath)) {
+                            unlink($previousImagePath);
+                        }
+                        $previousgalleryImages = DB::table('gallery')->where('product_id', $product_id)->delete();
+                    }
+                    foreach ($galleryImages as $galleryImage) {
+                        $galleryImageName = md5(time().'_'.rand()).'.'.$galleryImage->getClientOriginalExtension();
+                        DB::table('gallery')->insert([
+                            'image_name' =>$galleryImageName,
+                            'image_title' =>$galleryImageName,
+                            'product_id' => $product_id
+                        ]);
+                    
+                        
+                        $galleryImage->move(public_path('images/galleries'), $galleryImageName);
+                        
+                    }
+                }
+                
+                // dd($product_update);
+                DB::commit();
+                
+
+                
+            } catch (\Throwable $th) {
+                DB::rollBack();
+        
+            }
+
+            return response()->json([
+                'status' => true,
+                'success' => 'successfully Update the Product',
+            ]);
+        }elseif ($type=='copy') {
+            if ($request->hasFile('thumbnail_image')) {
+                $thumbnailImage = $request->file('thumbnail_image');
+                $imageName = md5(time().'_'.rand()).'.'.$thumbnailImage->getClientOriginalExtension();
+                
+                $thumbnailImage->move(public_path('images/galleries'), $imageName);
+                
+            }else {
+                $imageName=null;
+            }
+            try {
+                DB::beginTransaction();
+                $product_id= DB::table('products')->insertGetId([
+                    'product_code' =>$productCode,
+                    'title' =>$title,
+                    'category_id' =>$category_id,
+                    'quantity' =>$quantity,
+                    'price' =>$price,
+                    'discount' =>$discount,
+                    'description' =>$description,
+                    'thumbnail' =>$imageName,
+                ]);
+    
+                if ($product_id) {
+                    // For multiple file uploads
+                    if ($request->hasFile('gallery_images')) {
+                        $galleryImages = $request->file('gallery_images');
+                        
+                        foreach ($galleryImages as $galleryImage) {
+                            $galleryImageName = md5(time().'_'.rand()).'.'.$galleryImage->getClientOriginalExtension();
+                            DB::table('gallery')->insert([
+                                'image_name' =>$galleryImageName,
+                                'image_title' =>$galleryImageName,
+                                'product_id' => $product_id
+                            ]);
+                           
+                            
+                            $galleryImage->move(public_path('images/galleries'), $galleryImageName);
+                            
+                        }
+                    }
+                }
+                // dd($product_id);
+                DB::commit();
+                return response()->json([
+                    'status' => true,
+                    'success' => 'successfully Copy the Product',
+                ]);
+    
+                
+            } catch (\Throwable $th) {
+                DB::rollBack();
+           
+            }
+        }else {
+            return response()->json([
+                'status' => false,
+                'success' => 'something wrong',
+            ]);
         }
-
-        return response()->json([
-            'status' => true,
-            'success' => 'successfully Update the Product',
-        ]);
+       
+       
 
         
     }

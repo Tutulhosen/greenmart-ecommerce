@@ -43,7 +43,7 @@
                         @endif
                     </h3>
                     <p class="sku_text"><span>প্রোডাক্ট কোড: </span> <span class="p-0 pr-1">{{ $single_product_data['product_code'] }}</span></p>
-                    <h4 class="single_prod_in_stock">স্টক : <span class="text-danger">স্টক আউট</span></h4>
+                    {{-- <h4 class="single_prod_in_stock">স্টক : <span class="text-danger">স্টক আউট</span></h4> --}}
 
                     <form action="{{route('shop.checkout')}}" method="post">
                         @csrf
@@ -162,11 +162,7 @@
     </div>
     
 </section>
-<script>
- 
-   
 
-</script>
 @endsection
 
 

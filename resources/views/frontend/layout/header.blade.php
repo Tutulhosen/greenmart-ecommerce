@@ -207,8 +207,10 @@
                 <i class="fa fa-times-circle"></i>
             </button>
         </div>
+        <div class="shop_btn">
+            <a class="" href="{{route('shop.page')}}">Shop</a>
+        </div>
     </div>
-
 <div class="header-bottom d-md-block d-none">
     <div class="container">
         <div class="row">
@@ -228,5 +230,7 @@
         </div>
     </div>
 </div>
+
+
 </header>
 

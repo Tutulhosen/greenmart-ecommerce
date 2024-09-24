@@ -216,6 +216,7 @@ span, h1, h2, h3, h4, h5, h6, p, a {
 .main-product-inner-wrapper {
     border: 1px solid #ddd;
     padding: 5px;
+    height: 100% !important;
 }
 
 .main-product-inner-wrapper img {
@@ -334,8 +335,25 @@ span, h1, h2, h3, h4, h5, h6, p, a {
 
 .search-form-m {
     display: none;
+    position: relative;
 }
-
+.shop_btn{
+    position: absolute;
+    right: 48%;
+    top: 98px;
+    padding: 7px;
+    height: 42px;
+    width: 57px;
+    border-radius: 30%;
+    background: #e42b2b;
+    border: 1px solid white;
+    cursor: pointer;
+}
+.shop_btn a{
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
 .category_breadcrumb {
     background-color: black;
     padding: 7px 0;

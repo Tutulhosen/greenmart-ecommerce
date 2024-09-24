@@ -14,6 +14,7 @@
                 <form class="forms-sample" id="myform">
                     @csrf
                     <input type="hidden" name="product_id" id="product_id" value="{{$product_list->id}}">
+                    <input type="hidden" name="type" id="type" value="{{$type}}">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -135,6 +136,7 @@
         $('#product_update_btn').on('click', function(){
             
             var product_id = $('#product_id').val();
+            var type = $('#type').val();
             var product_code = $('#product_code').val();
             var title = $('#title').val();
             var category_id = $('#category_id').val();
@@ -176,6 +178,7 @@
             // Create a FormData object to send data with AJAX
             var formData = new FormData();
             formData.append('product_id', product_id);
+            formData.append('type', type);
             formData.append('product_code', product_code);
             formData.append('title', title);
             formData.append('category_id', category_id);

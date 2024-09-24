@@ -24,7 +24,7 @@
                     @endif
                 </h3>
                 <p class="sku_text"><span>প্রোডাক্ট কোড: </span> <span class="p-0 pr-1">{{ $product['product_code'] }}</span></p>
-                <h4 class="single_prod_in_stock">স্টক : <span class="text-danger">স্টক আউট</span></h4>
+                {{-- <h4 class="single_prod_in_stock">স্টক : <span class="text-danger">স্টক আউট</span></h4> --}}
         
                 <form action="{{route('shop.checkout')}}" method="post">
                     @csrf
@@ -56,7 +56,7 @@
                     
                     
                     <div class="mt-md-3 mt-2">
-                        <button data-id="{{ $product['id'] }}" data-price="{{ $product['price'] }}" type="button" class="btn px-4 add_cart_btn" id="add_cart_btn_direct">কার্ট-এ যোগ করুন</button>
+                        <input type="submit" class="btn px-4 add_cart_btn" name="add_cart" value="কার্ট-এ যোগ করুন">
                     </div>
                 </form>
                 
@@ -94,11 +94,13 @@
 
 <script>
     $(document).ready(function(){
-        $('#add_cart_btn_direct').on('click', function(){
-            var productId = $(this).data('id');
-           
-            var qty = $(this).data('qnt');
-            var price = $(this).data('price');
+        $('.add_cart_btn').click(function (e) {
+            e.preventDefault();
+            // Get the product details
+            var productId = $('#product_id').val();
+            
+            var qty = $('#qty').val();
+            var price = $('#product_price_value').val();
 
             // Send AJAX request to add product to cart
             $.ajax({
@@ -125,10 +127,13 @@
 
                         // Update the cart count display
                         $('#cart-count').text(cartCount);
+                        
                     
 
                         // Toaster alert for successfully adding to cart
                         toastr.success('Product added to cart!', 'Success');
+
+                        
                     }
                 },
                 error: function (error) {
@@ -137,7 +142,25 @@
                     console.log(error);
                 }
             });
-        })
+        });
+
+        // Increment quantity
+        document.getElementById('qty_plus').addEventListener('click', function () {
+            var qty = parseInt(document.getElementById('qty').value);
+            qty++;
+            document.getElementById('qty').value = qty;
+            updateTotalAmount(); // Update total
+        });
+
+        // Decrement quantity
+        document.getElementById('qty_minus').addEventListener('click', function () {
+            var qty = parseInt(document.getElementById('qty').value);
+            if (qty > 1) {
+                qty--;
+                document.getElementById('qty').value = qty;
+                updateTotalAmount(); // Update total
+            }
+        });
     })
 </script>
     

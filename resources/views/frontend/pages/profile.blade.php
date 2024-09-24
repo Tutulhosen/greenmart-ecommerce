@@ -59,6 +59,7 @@
                 <!-- Left Column - Wishlist -->
                 <div class="saved-addresses">
                     <h2>Saved Addresses</h2>
+                    @if (!empty($customer_address))
                     <div class="row">
                         <div class="col-md-6">
                             <h2 style="font-size: 24px;">Permanent Addresses</h2><br>
@@ -77,6 +78,10 @@
                         </div>
                         <div class="col-md-6"></div>
                     </div>
+                    @else
+                        
+                    @endif
+                    
                     <a href="{{route('user.address.update.page')}}" class="btn w-100">Manage Addresses</a>
                     
                 </div>

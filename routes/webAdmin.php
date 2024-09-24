@@ -71,7 +71,7 @@ Route::middleware('admin')->group(function (){
         Route::get('/list',[ProductController::class, 'productList'])->name('list');
         Route::get('/create',[ProductController::class, 'productCreate'])->name('create');
         Route::post('/store',[ProductController::class, 'productStore'])->name('store');
-        Route::get('/update/{id}',[ProductController::class, 'productupdatePage'])->name('update.page');
+        Route::get('/update/{id}/{type}',[ProductController::class, 'productupdatePage'])->name('update.page');
         Route::post('/update',[ProductController::class, 'productUpdate'])->name('update');
         Route::get('/delete/{id}',[ProductController::class, 'productDelete'])->name('delete');
         Route::get('/status/update/{id}',[ProductController::class, 'productStatusUpdate'])->name('status.update');
